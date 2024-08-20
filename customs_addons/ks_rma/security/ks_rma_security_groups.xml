@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!--    RMA category-->
+    <record id="module_category_ks_rma" model="ir.module.category">
+        <field name="name">RMA</field>
+    </record>
+
+
+    <!--    RMA User Group -->
+    <record id="group_ks_rma_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_ks_rma"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+
+    <!--    RMA Manager Group -->
+    <record id="group_ks_rma_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_ks_rma"/>
+        <field name="implied_ids" eval="[(4, ref('base.user_admin')), (4, ref('ks_rma.group_ks_rma_user'))]"/>
+    </record>
+
+    <!--MultiCompany Rule    -->
+    <record model="ir.rule" id="ks_rma_order_comp_rule">
+        <field name="name">RMA multi-company</field>
+        <field name="model_id" ref="model_ks_rma"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('ks_company_id', '=', False), ('ks_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="ks_rma_order_line_comp_rule">
+        <field name="name">RMA Line multi-company</field>
+        <field name="model_id" ref="model_ks_rma_line"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('ks_company_id', '=', False), ('ks_company_id', 'in', company_ids)]</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!--    RMA Tree view-->
+
+    <record id="ks_rma_view_orders_tree" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.tree</field>
+        <field name="model">ks.rma</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc">
+                <field name="ks_sequence_code" optional="show"/>
+                <field name="ks_partner_id" optional="show"/>
+                <field name="ks_picking_id" optional="show"/>
+                <field name="ks_team_id" optional="hide"/>
+                <field name="ks_user_id" optional="show"/>
+                <field name="ks_date_confirmed" optional="show"/>
+                <field name="ks_company_id" optional="show"/>
+                <field name="ks_warehouse_id" optional="show"/>
+                <field name="ks_confirmed_user_id" optional="show"/>
+                <field name="state" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--    RMA form view-->
+
+    <record id="ks_rma_view_orders_form" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.form</field>
+        <field name="model">ks.rma</field>
+        <field name="arch" type="xml">
+            <form string="RMA">
+                <header>
+                    <button name="action_ks_rma_email" string="Send By Email" type="object"
+                            class="btn btn-primary" attrs="{'invisible': [('state','in','wait')]}"
+                    />
+                    <button name="action_ks_rma_send_approval" string="Send For Approval" type="object"
+                            class="btn btn-primary"
+                            attrs="{'invisible': ['|',('state','in',('wait','confirm','refunded','returned','replaced','refund_return','closed','reject')), ('ks_check_approval', '!=', True)]}"
+                            groups="ks_rma.group_ks_rma_user"
+                    />
+                    <button name="action_ks_rma_approved" string="Confirm" type="object" class="btn btn-primary"
+                            attrs="{'invisible': ['|',('state','not in',('draft', 'sent', 'wait')), ('ks_check_approval', '!=', True)]}"
+                            groups="ks_rma.group_ks_rma_manager"
+                    />
+                    <button name="action_ks_rma_send_reject" string="Reject" type="object" class="btn btn-secondary"
+                            attrs="{'invisible': ['|',('state','not in',('draft', 'sent', 'wait')), ('ks_check_approval', '!=', True)]}"
+                            groups="ks_rma.group_ks_rma_manager"
+                    />
+                    <button name="action_ks_rma_approved" string="Confirm" type="object" class="btn btn-primary"
+                            attrs="{'invisible': ['|',('state','not in',('draft', 'sent', 'wait')), ('ks_check_approval', '!=', False)]}"
+                    />
+                    <button name="action_ks_rma_cancel" string="Cancel" type="object" class="btn btn-secondary"
+                            attrs="{'invisible': [('state','!=','draft')]}"
+                    />
+                    <button name="action_ks_rma_refund" string="Refund" type="object"
+                            class="btn btn-primary" attrs="{'invisible': ['|','|', ('ks_is_refund', '!=', True),
+                            ('ks_refund_invoice_id', '!=', False),('state', 'in', ('draft','closed','cancel','wait','reject'))]}"
+                            help="To Create Refund OF RMA line"
+                    />
+                    <button name="action_ks_rma_return" string="Return" type="object"
+                            class="btn btn-primary" attrs="{'invisible': ['|','|',('state', 'in', ('draft','closed','cancel','wait','reject')),
+                            ('ks_is_return', '!=', True), ('ks_return_picking_id','!=', False)]}"
+                            help="To Create Return OF RMA line"
+                    />
+                    <button name="action_ks_rma_replace" string="Replace" type="object"
+                            class="btn btn-primary" attrs="{'invisible': ['|','|',('state', 'in', ('draft','closed','cancel','wait','reject')),
+                            ('ks_is_replace', '!=', True), ('ks_return_picking_id','!=', False)]}"
+                            help="To Create Replace OF RMA line"
+                    />
+                    <button type="object"
+                            string="Preview" class="btn btn-secondary"
+                            name="ks_action_preview" help="To Open The Portal Page This RMA"
+                            attrs="{'invisible': ['|', ('state','in','wait'), ('ks_check_preview', '!=', True)]}"
+                    />
+                    <button name="action_ks_rma_close" string="Close" type="object" class="btn btn-secondary"
+                            attrs="{'invisible': [('state','not in', ('confirm', 'refunded', 'returned', 'replaced', 'refund_return'))]}"
+                    />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object"
+                                name="action_view_receipt"
+                                string="Receipt"
+                                class="oe_stat_button"
+                                icon="fa-truck"
+                                attrs="{'invisible': ['|',('ks_selection','!=','sale_order'), ('ks_return_picking_id','=', False)]}"
+                        >
+                        </button>
+                        <button type="object"
+                                name="action_view_receipt"
+                                string="Delivery Order"
+                                class="oe_stat_button"
+                                icon="fa-truck"
+                                attrs="{'invisible': ['|',('ks_selection','!=','purchase_order'),('ks_return_picking_id','=', False)]}"
+                        >
+                        </button>
+                        <button type="object"
+                                name="action_view_receipt_replace"
+                                string="Receipt"
+                                class="oe_stat_button"
+                                icon="fa-truck"
+                                attrs="{'invisible': ['|',('ks_selection','!=','purchase_order'),('ks_picking_id_replace','=', False)]}"
+                        >
+                        </button>
+                        <button type="object"
+                                name="action_view_receipt_replace"
+                                string="Delivery Order"
+                                class="oe_stat_button"
+                                icon="fa-truck"
+                                attrs="{'invisible': ['|',('ks_selection','!=','sale_order'), ('ks_picking_id_replace','=', False)]}"
+                        >
+                        </button>
+                        <button type="object"
+                                name="action_view_receipt"
+                                string="Transfer"
+                                class="oe_stat_button"
+                                icon="fa-truck"
+                                attrs="{'invisible': ['|',('ks_selection','!=','transfer'), ('ks_return_picking_id','=', False)]}"
+                        >
+                        </button>
+                        <button type="object"
+                                name="action_view_refund_invoice"
+                                string="Invoice"
+                                class="oe_stat_button"
+                                icon="fa-pencil-square-o"
+                                attrs="{'invisible': [('ks_refund_invoice_id','=', False)]}"
+                        >
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="ks_sequence_code" readonly="1"/>
+                    </h1>
+                    <group name="ks_container">
+
+                        <group name="ks_first_info">
+                            <field name="ks_partner_id" widget='res_partner_many2one'
+                                   context="{'show_address': 1, 'show_vat': True}" options='{"always_reload": True}'/>
+                            <field name="ks_team_id" options="{'no_open': True}" widget="Many2one"/>
+                            <field name="ks_user_id" options="{'no_open': True}" widget="Many2one"/>
+                            <field name="ks_company_id" options="{'no_open': True}" widget="Many2one"
+                                   groups="base.group_multi_company"/>
+                            <field name="ks_currency_id" options="{'no_open': True}" widget="Many2one"
+                                   groups="base.group_multi_currency"/>
+                            <field name="ks_warehouse_id" widget="Many2one"
+                                   groups="stock.group_stock_multi_warehouses"/>
+                            <field name="ks_status_return" invisible="1"/>
+                            <field name="ks_status_refund" invisible="1"/>
+                            <field name="ks_policy"/>
+                            <field name="ks_terms"/>
+                            <field name="ks_picking_id_replace" invisible="1"/>
+                            <field name="ks_check_approval" invisible="1"/>
+                            <field name="ks_check_preview" invisible="1"/>
+                        </group>
+                        <group name="ks_second_info">
+                            <field name="ks_selection" required="1"/>
+                            <field name="ks_purchase_order_id" options="{'no_create_edit': True}"
+                                   widget="Many2one" domain="[('state', 'in', ('purchase', 'done'))]"
+                                   attrs="{'invisible': [('ks_selection','!=','purchase_order')]}"/>
+                            <field name="ks_sale_order_id" options="{'no_create_edit': True}"
+                                   widget="Many2one" domain="[('state', 'in', ('sale', 'done'))]"
+                                   attrs="{'invisible': [('ks_selection','!=', 'sale_order')]}"/>
+                            <field name="ks_picking_id" options="{'no_create_edit': True}" widget="Many2one"
+                                   attrs="{'invisible': [('ks_selection','!=', 'transfer'), ('ks_purchase_order_id','=', False), ('ks_sale_order_id','=', False)]}"
+                                   domain="[('origin','=',ks_get_picking), ('state', '=', 'done'), ('ks_rma_id', '=', False)]"/>
+                            <field name="ks_picking_type_id" widget="Many2one"
+                                   attrs="{'invisible': [('ks_picking_id','=',False)]}"/>
+                            <field name="ks_return_picking_type_id" widget="Many2one" required="1"
+                                   attrs="{'invisible': [('ks_picking_id','=',False)]}"/>
+                            <field name="ks_date_requested"/>
+                            <field name="ks_date_confirmed"
+                                   attrs="{'invisible': [('state','in',('draft', 'cancel'))]}"/>
+                            <field name="ks_date_cancelled" attrs="{'invisible': [('state','!=','cancel')]}"/>
+                            <field name="ks_date_closed" attrs="{'invisible': [('state','!=','closed')]}"/>
+                            <field name="ks_confirmed_user_id" options="{'no_open': True}" widget="Many2one"
+                                   attrs="{'invisible': [('state','in',('draft', 'cancel'))]}"/>
+                            <field name="ks_reason_return"
+                                   attrs="{'invisible':[('ks_is_return','!=',True)], 'required': [('ks_is_return','=',True)]}"
+                                   widget="Many2one"/>
+                            <field name="ks_reason_refund"
+                                   attrs="{'invisible':[('ks_is_refund','!=',True)], 'required': [('ks_is_refund','=',True)]}"
+                                   widget="Many2one"/>
+                            <field name="ks_reason_replace"
+                                   attrs="{'invisible':[('ks_is_replace','!=',True)], 'required': [('ks_is_replace','=',True)]}"
+                                   widget="Many2one"/>
+                        </group>
+
+                        <group string="RMA Operation">
+                            <group>
+                                <field name="ks_is_return" optional="show"
+                                       attrs="{'invisible': [('ks_is_replace','=', True)]}"/>
+                            </group>
+                            <group>
+                                <field name="ks_is_refund" optional="show"
+                                       attrs="{'invisible': ['|',('ks_selection','=', 'transfer'), ('ks_is_replace','=', True)]}"/>
+                            </group>
+                            <group>
+                                <field name="ks_is_replace" optional="show"
+                                       attrs="{'invisible': [('ks_selection','=', 'transfer')]}"/>
+                            </group>
+                        </group>
+                    </group>
+                    <notebook string="Notebook" name="ks_notebook">
+                        <page string="RMA Line" name="ks_rma_line">
+                            <field name="ks_rma_line_ids" mode="tree,kanban">
+                                <tree editable="bottom">
+                                    <field name="ks_rma_id" invisible="1"/>
+                                    <field name="ks_product_id"/>
+                                    <field name="ks_delivered_qty"/>
+                                    <field name="ks_price_unit"
+                                           attrs="{'column_invisible': [('parent.ks_is_refund','!=',True)]}"/>
+                                    <field name="tax_ids" widget="many2many_tags"
+                                           attrs="{'column_invisible': [('parent.ks_is_refund','!=',True)]}"/>
+                                    <field name="discount" class="oe_inline" groups="product.group_discount_per_so_line"
+                                           attrs="{'column_invisible': ['|',('parent.ks_is_refund','!=',True), ('parent.ks_selection','!=','sale_order')]}"/>
+                                    <field name="ks_returned_qty"
+                                           attrs="{'column_invisible': [('parent.ks_is_return','!=',True)]}"/>
+                                    <field name="ks_refund_qty"
+                                           attrs="{'column_invisible': [('parent.ks_is_refund','!=',True)]}"/>
+                                    <field name="ks_replace_qty"
+                                           attrs="{'column_invisible': [('parent.ks_is_replace','!=',True)]}"/>
+                                    <field name="ks_subtotal_amount"
+                                           attrs="{'column_invisible': [('parent.ks_is_refund','!=',True)]}"/>
+
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="RMA Notes" name="ks_rma_notes">
+                            <field name="ks_notes" placeholder="Add a Notes"/>
+                        </page>
+                        <page string="Additional Info" name="ks_extra_info">
+                            <group>
+                                <field name="ks_refund_invoice_id" options="{'no_create_edit': True}"
+                                       widget="Many2one"
+                                       attrs="{'invisible': ['|',('ks_is_refund','!=',True),('ks_refund_invoice_id','=', False)]}"/>
+                                <field name="ks_return_picking_id" options="{'no_create_edit': True}"
+                                       widget="Many2one"
+                                       attrs="{'invisible': ['|',('ks_is_return','!=',True),('ks_return_picking_id','=', False)]}"/>
+                                <field name="ks_get_picking" invisible="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <group class="oe_subtotal_footer oe_right">
+                        <field name="ks_refund_amount"
+                               attrs="{'invisible': [('ks_is_refund','!=',True)]}"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="ks_rma_form_view_inherit_for_Approval" model="ir.ui.view">
+    <field name="name">ks.rma.form.inherit.approval</field>
+    <field name="model">ks.rma</field>
+    <field name="inherit_id" ref="ks_rma.ks_rma_view_orders_form"/>
+    <field name="groups_id" eval="[(6, 0, [ref('ks_rma.group_ks_rma_manager') ])]"/>
+    <field name="arch" type="xml">
+        <xpath expr="//button[@name='action_ks_rma_send_approval']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+    </field>
+</record>
+
+
+    <!--            RMA Views for the Manager Group-->
+    <record id="ks_rma_view_orders_form_inherit_manager" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.form.inherit.manager</field>
+        <field name="model">ks.rma</field>
+        <field name="inherit_id" ref="ks_rma.ks_rma_view_orders_form"/>
+        <field name="groups_id" eval="[(4, ref('group_ks_rma_manager'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_ks_rma_send_approval']" position="after">
+                <!--                <button name="action_ks_rma_approve" string="Approve" type="object"-->
+                <!--                        class="btn btn-success"-->
+                <!--                        attrs="{'invisible': [('state','!=','wait')]}"/>-->
+                <!--                <button name="action_ks_rma_send_reject" string="Reject" type="object"-->
+                <!--                        class="btn btn-danger"-->
+                <!--                        attrs="{'invisible': [('state','!=','wait')]}"/>-->
+            </xpath>
+        </field>
+    </record>
+
+    <!--    Search Views (Custom filters and GroupBy Information )-->
+    <record id="ks_rma_view_orders_search" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.search</field>
+        <field name="model">ks.rma</field>
+        <field name="arch" type="xml">
+            <search string="Search RMA">
+                <field name="ks_sequence_code"/>
+                <field name="state"/>
+                <filter name="ks_draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="ks_sent" string="Sent" domain="[('state','=','sent')]"/>
+                <filter name="ks_confirm" string="Confirmed" domain="[('state','=','confirm')]"/>
+                <filter name="ks_cancel" string="Cancelled" domain="[('state','=','cancel')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for draft state RMA-->
+    <record id="ks_rma_action_order_request" model="ir.actions.act_window">
+        <field name="name">RMA Request</field>
+        <field name="res_model">ks.rma</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_ks_draft': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First RMA Orders
+            </p>
+            <p>RMA is a part of the process of returning a product to receive a refund, replacement, or repair during
+                the products warranty period.
+            </p>
+        </field>
+    </record>
+
+    <!-- Action for confirm state RMA-->
+    <record id="ks_rma_action_order_orders" model="ir.actions.act_window">
+        <field name="name">RMA Orders</field>
+        <field name="res_model">ks.rma</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_ks_confirm': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First RMA Orders
+            </p>
+            <p>RMA is a part of the process of returning a product to receive a refund, replacement, or repair during
+                the products warranty period.
+            </p>
+        </field>
+    </record>
+
+
+    <!--Declaration of RMA Action -->
+
+    <record id="ks_rma_action_orders" model="ir.actions.act_window">
+        <field name="name">RMA</field>
+        <field name="res_model">ks.rma</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your First RMA Orders
+            </p>
+            <p>RMA is a part of the process of returning a product to receive a refund, replacement, or repair during
+                the products warranty period.
+            </p>
+        </field>
+    </record>
+
+    <!--    Action:  RMA Transfers-->
+    <record id="rma_action_picking_tree_all" model="ir.actions.act_window">
+        <field name="name">Transfers</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,form,calendar</field>
+        <field name="domain">['|', ('is_rma_in_picking', '=', True),('is_rma_out_picking', '=', True)]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new transfer
+            </p>
+            <p>
+                Transfers allow you to move products from one location to another.
+            </p>
+        </field>
+    </record>
+</odoo>

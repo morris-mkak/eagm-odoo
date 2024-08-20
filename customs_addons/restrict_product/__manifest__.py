@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Restrict Duplicate Products',
+    'version': '14.0.1.0.0',
+    'summary': 'Restrict Duplicate Products',
+    'description': """Restrict Duplicate Products""",
+    'category': 'Sale',
+    'author': 'Dishon Kadoh',
+    "website": "http://dishonkadoh.com/",
+    'depends': ['base',
+                'sale',
+                'sale_management',
+                'product'],
+    'data': [],
+    'images': ['static/description/banner.png'],
+    'license': 'LGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}

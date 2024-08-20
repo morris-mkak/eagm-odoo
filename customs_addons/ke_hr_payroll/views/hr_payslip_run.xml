@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <!--Add Fill KRA P10 Form Button-->
+        <record id="hr_ke_kra_form_inherit1" model="ir.ui.view">
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//header"
+                           position="inside">
+                        <button name="BatchConfirmPayslip" type="object"
+                                string="Confirm" class="oe_highlight"
+                                groups="hr_payroll.group_hr_payroll_manager"/>
+                        <button name="GetP10" type="object" string="Normal P10"
+                                class="oe_highlight"/>
+                        <button name="GetNSSFReturns" type="object"
+                                string="NSSF" class="oe_highlight"/>
+                        <button name="GetNHIFReturns" type="object"
+                                string="NHIF" class="oe_highlight"/>
+                        <button name="GetNetPay" type="object"
+                                string="Net-Pay" class="oe_highlight"/>
+                        <button name="GetPayrollSummary" type="object"
+                                string="Payroll Summary" class="oe_highlight"/>
+                    </xpath>
+                    <xpath expr="//sheet" position="after">
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"
+                                   groups="base.group_user"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

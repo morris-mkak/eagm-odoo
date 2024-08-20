@@ -1,0 +1,27 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'EAGM CUSTOM ADDONS',
+    'version': '14.0.1.0.0',
+    'summary': 'Module for general EAGM Customizations',
+    'description': """Module for general EAGM Customizations""",
+    'category': 'Sale',
+    'author': 'Dishon Kadoh',
+    "website": "http://dishonkadoh.com/",
+    'depends': ['base',
+                'sale_management'],
+    'data': [
+        'security/groups.xml',
+        'security/ir.model.access.csv',
+        'views/res_config_settings_view.xml',
+        'views/user_view.xml',
+        'views/sale_order.xml',
+        'views/product_pricelist_item.xml',
+        'wizard/brand_report_summary.xml',
+        'wizard/sales_report_summary.xml',
+    ],
+    'images': ['static/description/banner.png'],
+    'license': 'LGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}

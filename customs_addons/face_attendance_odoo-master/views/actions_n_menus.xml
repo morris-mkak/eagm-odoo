@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <!-- ACTIONS -->
+        <record model="ir.actions.act_window" id="face_attendance_employee_list">
+            <field name="name">Employees</field>
+            <field name="res_model">hr.employee</field>
+<!--            <field name="view_type">form</field>
+    -->        <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="face_attendance_employee_list_view"/>
+        </record>
+        <!-- MENUS -->
+        <menuitem name="Face Attendance" id="face_attendance_employee_root" />
+        <menuitem name="Employee" id="face_attendance_employee_view"
+                  action="face_attendance_employee_list" parent="face_attendance_employee_root"/>
+    </data>
+</odoo>

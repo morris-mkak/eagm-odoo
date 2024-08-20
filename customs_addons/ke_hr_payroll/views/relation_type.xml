@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Relation type Action-->
+        <record id="ke_relation_type_action" model="ir.actions.act_window">
+            <field name="name">Type of Relation</field>
+            <field name="res_model">ke.relation.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+         <menuitem id="menu_ke_relations_type"
+                  parent="hr_work_entry_contract.menu_hr_payroll_configuration"
+                  sequence="105" action="ke_relation_type_action"
+                  groups="hr.group_hr_manager"/>
+        <!-- Relations Type Form-->
+        <record id="ke_relations_type_form" model="ir.ui.view">
+            <field name="name">ke.hr.relations.type.form</field>
+            <field name="model">ke.relation.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group name="relation_type" string="Relation Type">
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="medical"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Relations Type Tree View-->
+        <record id="ke_relations_type_tree" model="ir.ui.view">
+            <field name="name">ke.hr.relations.type.tree</field>
+            <field name="model">ke.relation.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="medical"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

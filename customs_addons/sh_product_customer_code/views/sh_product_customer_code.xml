@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sh_product_customer_code_form_view_inherit" model="ir.ui.view">
+        <field name="name">sh.product.form.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <group name="sale" position="before">
+                <group string="Customers" name="customers">
+                    <field
+                        name="sh_product_customer_ids"
+                        context="{'default_product_tmpl_id':context.get('product_tmpl_id',active_id), 'product_template_invisible_variant': True}"
+                        nolabel="1"
+                    >
+                        <tree editable="bottom">
+                            <field name="name" widget="res_partner_many2one" />
+                            <field name="product_id" />
+                            <field name="product_code" />
+                            <field name="product_name" />
+                        </tree>
+                        <form string="Product Customer Code">
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="name" context="{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}" />
+                                        <field name="product_id" />
+                                    </group>
+                                    <group>
+                                        <field name="product_code" />
+                                        <field name="product_name" />
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </group>
+<!--                 <group string=" Customers" name="customers_varient"> -->
+<!--                     <field name="variant_customer_ids" attrs="{'invisible': [('product_variant_count','&lt;=',1)]}" context="{'default_product_tmpl_id': context.get('product_tmpl_id', active_id)}" nolabel="1"> -->
+<!--                         <tree editable="bottom"> -->
+<!--                             <field name="name" /> -->
+<!--                             <field name="product_id" /> -->
+<!--                             <field name="product_code" /> -->
+<!--                             <field name="product_name" /> -->
+<!--                         </tree> -->
+<!--                         <form string="Product Customer Code"> -->
+<!--                             <sheet> -->
+<!--                                 <group> -->
+<!--                                     <group> -->
+<!--                                         <field name="name" /> -->
+<!--                                         <field name="product_id" /> -->
+<!--                                     </group> -->
+<!--                                     <group> -->
+<!--                                         <field name="product_code" /> -->
+<!--                                         <field name="product_name" /> -->
+<!--                                     </group> -->
+<!--                                 </group> -->
+<!--                             </sheet> -->
+<!--                         </form> -->
+<!--                     </field> -->
+<!--                 </group> -->
+            </group>
+        </field>
+    </record>
+
+    <record id="product_template_search_view_inherit_costomer_code11" model="ir.ui.view">
+        <field name="name">product.template.search.inherit.sale</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="code_id" string="Customer Product Code" />
+            </field>
+        </field>
+    </record>
+</odoo>

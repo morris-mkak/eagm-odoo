@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <data>
+         <template id="assets_backend_eagm_custom_css" name="eagm_custom_css assets" inherit_id="web.assets_backend">
+             <xpath expr="." position="inside">
+                 <link rel="stylesheet" type="text/css" href="/eagm_custom_css/static/src/css/custom_css.css"/>
+             </xpath>
+         </template>
+     </data>     
+ </odoo>

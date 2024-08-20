@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--inherit and add fields to sale order-->
+    <record id="view_move_line_form_inherit" model="ir.ui.view">
+        <field name="name">stock.move.line.inherit</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_form"/>
+        <field name="arch" type="xml">
+            <field name="product_uom_qty" position="before">
+                <field name="reserved_ctns"/>
+            </field>
+            <field name="qty_done" position="before">
+                <field name="done_ctns"/>
+            </field>
+        </field>
+    </record>
+</odoo>

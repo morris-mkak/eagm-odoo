@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_form" model="ir.ui.view">
+        <field name="name">view.purchase.form.purchase.edifact.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <button name="action_rfq_send" position="after">
+                <button name="action_create_edifact" states="purchase" string="Export EDI" type="object" context="{'send_rfq':False}"/>
+            </button>
+        </field>
+    </record>
+</odoo>

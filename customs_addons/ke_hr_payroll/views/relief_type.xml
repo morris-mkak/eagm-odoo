@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+           <!-- Relief Type Action-->
+        <record id="ke_reliefs_type_action" model="ir.actions.act_window">
+            <field name="name">Types of Tax Relief</field>
+            <field name="res_model">ke.relief.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+          <menuitem id="menu_ke_reliefs_type"
+                  parent="hr_work_entry_contract.menu_hr_payroll_configuration"
+                  name="Tax Relief" sequence="103"
+                  action="ke_reliefs_type_action" groups="hr.group_hr_manager"/>
+         <!-- reliefs Type Form view-->
+        <record id="ke_reliefs_type_form" model="ir.ui.view">
+            <field name="name">ke.hr.reliefs.type.form</field>
+            <field name="model">ke.relief.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group name="relief_type" string="Tax Relief">
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="rule_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+         <!-- Reliefs Type Tree view-->
+        <record id="ke_relief_type_tree" model="ir.ui.view">
+            <field name="name">ke.hr.relief.type.tree</field>
+            <field name="model">ke.relief.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="rule_id"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_product_pricelist" model="res.groups">
+        <field name="name">Allowed user to view Product Pricelist</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <record id="view_product_pl_inherit_re" model="ir.ui.view">
+        <field name="name">product.product.pl</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="pricelist" string="PriceList"  groups="mai_product_pricelist_dynamic_listview.group_product_pricelist"> 
+                    <field name="final_pricelist_item_ids" widget="one2many" context="{'show_attribute': False}">
+                        <tree string="ProceList Items" editable="bottom">
+                            <field name="pricelist_id"/>
+                            <field name="pricelist_item_id"/>
+                            <field name="final_price" string="Price"/>
+                        </tree>
+                    </field>
+                    <field name="pricelist_item_ids" widget="one2many" context="{'show_attribute': False}" invisible="1">
+                        <tree string="ProceList Items" editable="bottom">
+                            <field name="pricelist_id"/>
+                            <field name="name"/>
+                            <field name="price" string="Disocunt"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_pl_tree_inherit_re" model="ir.ui.view">
+        <field name="name">product.product.tree.pl</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="pricelist_name" groups="mai_product_pricelist_dynamic_listview.group_product_pricelist" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_pricelist_pl_form_inherit_re" model="ir.ui.view">
+        <field name="name">product.pricelist.form.pl</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="allow_in_product_view" groups="mai_product_pricelist_dynamic_listview.group_product_pricelist"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_pricelist_pl_tree_inherit_re" model="ir.ui.view">
+        <field name="name">product.pricelist.tree.pl</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="allow_in_product_view" groups="mai_product_pricelist_dynamic_listview.group_product_pricelist"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

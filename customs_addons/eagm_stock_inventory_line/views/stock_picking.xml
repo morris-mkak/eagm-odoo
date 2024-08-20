@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="total_reserved_ctns"/>
+            </field>
+            <field name="origin" position="after">
+                <field name="total_done_ctns"/>
+            </field>
+            <field name="origin" position="after">
+                <field name="total_ctns"/>
+            </field>
+            <field name="origin" position="after">
+                <field name="total_ctns_without_package"/>
+            </field>
+            <field name="origin" position="after">
+                <field name="total_ctns_in_package"/>
+            </field>
+            <field name="origin" position="after">
+                <field name="total_repacked_ctns"/>
+            </field>
+          <!-- <notebook position="inside">
+                <page name="sales_purchases" position="after">
+                    <page string="Hospital" name="hospital">
+                        <group>
+                            <field name="ref"/>
+                            <field name="barcode"/>
+                        </group>
+                    </page>
+                </page>
+           </notebook> -->
+        </field>
+    </record>
+
+</odoo>

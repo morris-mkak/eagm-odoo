@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_rma_document">
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.ks_partner_id.lang)"/>
+            <t t-if="doc.ks_partner_id">
+                <t t-set="address">
+                    <div t-field="doc.ks_partner_id"
+                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                    <p t-if="doc.ks_partner_id.vat"><t t-esc="doc.ks_company_id.country_id.vat_label or 'Tax ID'"/>:
+                        <span t-field="doc.ks_partner_id.vat"/>
+                    </p>
+                </t>
+            </t>
+            <div class="page">
+                <h2 class="row mt32 mb32 pl-2">
+                    <span t-if="doc.state not in ['draft', 'cancelled']">RMA #
+                    </span>
+                    <span t-field="doc.ks_sequence_code"/>
+                </h2>
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+                        <strong>Date:</strong>
+                        <span t-field="doc.ks_date_confirmed"/>
+                    </div>
+                    <div t-if="doc.ks_user_id" class="col-6">
+                        <strong>Responsible:</strong>
+                        <span t-field="doc.ks_user_id"/>
+                    </div>
+                </div>
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+                        <strong>Sale Order:</strong>
+                        <p class="m-0" t-field="doc.ks_sale_order_id"/>
+                    </div>
+                    <div class="col-6">
+                        <strong>State:</strong>
+                        <p class="m-0">
+                            <t t-if="doc.state in ['refunded', 'replaced', 'returned']">
+                                <span class="small text-success orders_label_text_align">
+                                    <i class="fa fa-fw fa-check"/>
+                                    <b>
+                                        <span t-field="doc.state"/>
+                                    </b>
+                                </span>
+                            </t>
+                            <t t-elif="doc.state in ['cancelled', 'locked']">
+                                <span class="small text-danger orders_label_text_align">
+                                    <i class="fa fa-fw fa-times"/>
+                                    <b>
+                                        <span t-field="doc.state"/>
+                                    </b>
+                                </span>
+                            </t>
+                            <t t-else="">
+                                <span class="small text-info orders_label_text_align">
+                                    <i class="fa fa-fw fa-clock-o"/>
+                                    <b>
+                                        <span t-field="doc.state"/>
+                                    </b>
+                                </span>
+                            </t>
+                        </p>
+                    </div>
+                </div>
+                <div class="row mt32 mb32">
+                    <div t-if="doc.ks_picking_id" class="col-6" id="product_information">
+                        <strong>Origin delivery:</strong>
+                        <p class="m-0" t-field="doc.ks_picking_id"/>
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="Product table">
+                        <table>
+                            <thead>
+                                <th>
+                                    <strong>Products</strong>
+                                </th>
+                                <th>Delivered Quantity</th>
+                                <t t-if="doc.state == 'returned' or doc.state == 'refund_return'">
+                                    <th>Returned Quantity</th>
+                                </t>
+                                <t t-if="doc.state == 'refunded' or doc.state == 'refund_return'">
+                                    <th>Refund Quantity</th>
+                                </t>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.ks_rma_line_ids" t-as="rline">
+                                    <td class="d-md-table-cell">
+                                        <span t-field="rline.ks_product_id"/>
+                                    </td>
+                                    <td class="d-md-table-cell">
+                                        <span t-field="rline.ks_delivered_qty"/>
+                                    </td>
+                                    <t t-if="doc.state == 'refunded' or doc.state == 'refund_return'">
+                                        <td class="d-md-table-cell">
+                                            <span t-field="rline.ks_refund_qty"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="doc.state == 'returned' or doc.state == 'refund_return'">
+                                        <td class="d-md-table-cell">
+                                            <span t-field="rline.ks_returned_qty"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div t-if="doc.ks_notes">
+                    <strong>RMA Note:</strong>
+                    <p t-field="doc.ks_notes"/>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="report_rma">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ks_rma.report_rma_document" t-lang="doc.ks_partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

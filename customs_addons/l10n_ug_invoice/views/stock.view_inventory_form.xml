@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id='view_efris_view_inventory_form' model='ir.ui.view'>
+        <field name="name">efris.stock.inventory</field>
+        <field name="model">stock.inventory</field>
+        <field name="inherit_id" ref="stock.view_inventory_form"/>
+        <field name="arch" type="xml">
+                <data>
+                      <field name="location_ids" position="after">
+                        <field name="sent_to_efris" invisible="1"/>
+                      </field>
+
+                    <header position="inside" >
+
+                        <button string="Register with URA" type="object"
+                                name="action_adjust_quantity_in_efris"
+                                class="oe_highlight"
+
+                                attrs="{'invisible': [('sent_to_efris', '=', True) ]}"
+                        />
+
+                        <button string="Sych with Efris Stock" type="object"
+                                name="action_synch_quantity_in_efris"
+                                class="oe_highlight"
+                        />
+
+
+
+                    </header>
+                </data>
+        </field>
+    </record>
+</odoo>

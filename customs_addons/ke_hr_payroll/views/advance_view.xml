@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- salary adanve Action-->
+        <record id="ke_advance_action" model="ir.actions.act_window">
+            <field name="name">Salary Advance Request</field>
+            <field name="res_model">ke.advance</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- advance  Form view-->
+        <record id="ke_advance_form" model="ir.ui.view">
+            <field name="name">ke.advance.form</field>
+            <field name="model">ke.advance</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Send for Approval"
+                                name="advance_approval"
+                                type="object"
+                                groups="base.group_user"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button string="HR Approval"
+                                name="advance_approved"
+                                type="object"
+                                attrs="{'invisible': [('state', '!=', 'hr')]}"
+                                groups="hr.group_hr_manager,hr.group_hr_user"
+                                class="oe_highlight"/>
+                        <button string="Reject"
+                                name="advance_disapproved"
+                                type="object"
+                                groups="hr.group_hr_manager,hr.group_hr_user"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('state', '!=', 'hr')]}"/>
+                        <button string="Reset to Draft"
+                                name="advance_reset"
+                                type="object"
+                                states="rejected"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,hr,approved,rejected"
+                               statusbar_colors="{&quot;draft&quot;:&quot;blue&quot;,&quot;approval&quot;:&quot;blue&quot;,&quot;approved&quot;:&quot;green&quot;}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="employee_id"
+                                       options="{'no_quick_create':True, 'no_open': True}"/>
+                              <!-- <field name="dept_id"
+                                       attrs="{'readonly':[('state','!=','draft')]}"
+                                       options="{'no_quick_create':True, 'no_open': True}"/> -->
+                            </group>
+                            <group>
+                                <field name="contract_id"
+                                       options="{'no_quick_create':True, 'no_open': True}"/>
+                                <field name="request_date"
+                                       attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="amount"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Reasons For Salary Advance">
+                                <field name="description"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                   <div class="oe_chatter">
+                        <field name="message_follower_ids"
+                               widget="mail_followers"
+                               groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <!-- Advance Tree view-->
+        <record id="ke_advance_tree" model="ir.ui.view">
+            <field name="name">ke.advance.tree</field>
+            <field name="model">ke.advance</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="dept_id"/>
+                    <field name="employee_id"/>
+                    <field name="amount"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="ke_advance_search" model="ir.ui.view">
+            <field name="name">ke.advance.search</field>
+            <field name="model">ke.advance</field>
+            <field name="arch" type="xml">
+                <search string="Overtime Search">
+                    <field name="employee_id"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>
+

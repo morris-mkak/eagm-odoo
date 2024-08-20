@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_partner_category_manager,partner.category.manager,model_partner_category,sales_team.group_sale_manager,1,1,1,1
+access_partner_category_public,partner.category.public,model_partner_category,,1,0,0,0

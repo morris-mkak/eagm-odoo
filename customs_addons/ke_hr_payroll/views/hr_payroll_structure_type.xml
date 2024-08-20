@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+         <!--add remuneration type field in the hr contract types -->
+        <record id="hr_ke_payroll_structure_type_inherit" model="ir.ui.view">
+            <field name="model">hr.payroll.structure.type</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payroll_structure_type_view_form"/>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//field[@name = 'wage_type']" position="after">
+                        <!--<field name="rem_type" colspan="4"/>-->
+                        <field name="tax_applicable" colspan="4"/>
+                </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

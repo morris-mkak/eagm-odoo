@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_invoice_document"  inherit_id="account.report_invoice_document">
+          <xpath expr="//div[@id='informations']" position="before">
+			<div id="ura_info" class="row mt32 mb32">
+                <div class="col-auto col-3 mw-100 mb-2"  t-if="o.l10n_ug_antifake_code"  name="l10n_ug_antifake_code">
+                    <strong>Verification code:</strong>
+                     <p class="m-0" t-field="o.l10n_ug_antifake_code"/>
+
+                </div>
+                <div class="col-auto col-3 mw-100 mb-2"  t-if="o.l10n_ug_invoice_number"  name="l10n_ug_invoice_number">
+                    <strong>Fiscal Document Number:</strong>
+                     <p class="m-0" t-field="o.l10n_ug_invoice_number"/>
+
+                </div>
+                <div class="col-auto col-3 mw-100 mb-2"  t-if="o.l10n_ug_qr_code_str"  name="l10n_ug_qr_code_str">
+                        <img t-if="o.l10n_ug_invoice_number"
+                     style="display:block;margin:0 0 0 auto;"
+                     t-att-src="'/report/barcode/?type=%s&amp;width=%s&amp;height=%s&amp;value=%s'%('QR', 150, 150, o.l10n_ug_qr_code_str.strip())"/>
+
+                </div>
+            </div> <!--ura_info-->
+        </xpath>
+    </template>
+        <!-- FIXME: Temp fix to allow fetching invoice_documemt in Studio Reports with localisation [Copied from l10n_ar]-->
+
+</odoo>
+

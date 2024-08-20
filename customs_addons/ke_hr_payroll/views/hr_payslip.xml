@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="hr_payroll_view_hr_payslip_form" model="ir.ui.view">
+            <field name="name">inherit.hr.payroll.view.hr.payslip.form</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//page[@name='account_info']" position="after">
+                    <page string="Details By Salary Rule Category">
+                        <field name="details_by_salary_rule_category"
+                               context="{'group_by':'category_id'}"
+                               domain="[('appears_on_payslip', '=', True)]">
+                            <tree string="Payslip Lines"
+                                  decoration-info="total == 0">
+                                <field name="category_id"/>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="total"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+         <!--        Add Print Excel Button to payslip-->
+        <record id="hr_ke_payslip_excel_form_inherit1" model="ir.ui.view">
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name= 'action_payslip_cancel']"
+                           position="after">
+                        <button name="GetPayslipExcel" type="object"
+                                string="Print Excel Payslip"
+                                class="oe_highlight"/>
+                    </xpath>
+                    <xpath expr="//button[@name= 'action_payslip_done']"
+                           position="attributes">
+                        <attribute name="groups">
+                            hr_payroll.group_hr_payroll_manager
+                        </attribute>
+                    </xpath>
+                    <xpath expr="//sheet" position="after">
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"
+                                   groups="base.group_user"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>
+

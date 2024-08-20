@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ks_rma,ks_rma,model_ks_rma,,1,1,1,1
+access_ks_rma_line,ks_rma.line,model_ks_rma_line,,1,1,1,1
+access_ks_rma_report,ks.rma.report,model_ks_rma_report,,1,1,1,1
+access_ks_return,ks.return.reasons,model_ks_return_reasons,,1,1,1,1
+access_ks_refund,ks.refund.reasons,model_ks_refund_reasons,,1,1,1,1
+access_ks_replace,ks.replace.reasons,model_ks_replace_reasons,,1,1,1,1
+

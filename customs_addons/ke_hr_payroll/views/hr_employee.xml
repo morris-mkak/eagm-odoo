@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Modifying Employeee Form to add kenya specific details -->
+        <record id="ke_view_employee_form_inherit01" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherit_01</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='active_group']"
+                           position="attributes">
+                        <attribute name="string"/>
+                    </xpath>
+                    <xpath expr="//group[@name='active_group']"
+                           position="inside">
+                    </xpath>
+                    <xpath expr="//group[@name='active_group']"
+                           position="after">
+                        <group colspan="6" string="Payroll">
+                            <group>
+                                <field name="emp_type"/>
+                                <field name="resident"/>
+                                <field name="director"/>
+                                <field name="director_type"
+                                       attrs="{'invisible': [('director', '=', False)], 'required': [('director', '=', True)]}"/>
+                                <field name="global_income"
+                                       attrs="{'invisible': ['|',('director', '=', False), ('director_type', '=', 'full')], 'required': [('director_type', '=', 'nonfull')]}"/>
+                                <field name="disability"/>
+                                <field name="helb"/>
+                                <field name="helb_rate"
+                                       attrs="{'invisible': [('helb', '=', False)], 'required': [('helb', '=', True)]}"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="pension"
+                                       string="Pension/Providend Fund?"/>
+                                <field name="disability_rate"
+                                       attrs="{'invisible': [('disability', '=', False)], 'required': [('disability', '=', True)]}"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="disability_cert"
+                                       attrs="{'invisible': [('disability', '=', False)], 'required': [('disability', '=', True)]}"/>
+                            </group>
+                            <group>
+                                <field name="tax_pin"
+                                       attrs="{'invisible': [('emp_type', '=', 'secondary'),('is_consultant', '=', False)], 'required': ['|',('emp_type', '=', 'primary'),('is_consultant', '=', True)]}"/>
+                                <field name="nhif"
+                                       attrs="{'invisible': [('emp_type', '=', 'secondary')], 'required': [('emp_type', '=', 'primary')]}"/>
+                                <field name="nssf"
+                                       attrs="{'invisible': [('emp_type', '=', 'secondary')], 'required': [('emp_type', '=', 'primary')]}"/>
+                                <field name="hosp"/>
+                                <field name="hosp_deposit"
+                                       attrs="{'invisible': [('hosp', '=', False)], 'required': [('hosp', '=', True)]}"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="is_consultant"
+                                       attrs="{'invisible': [('emp_type', '=', 'primary')],'required': [('emp_type', '=', 'primary')]}"/>
+                                <field name="mortgage"/>
+                                <field name="mortgage_interest"
+                                       attrs="{'invisible': [('mortgage', '=', False)], 'required': [('mortgage', '=', True)]}"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="nssf_vol"/>
+                                <field name="nssf_vol_mem"
+                                       attrs="{'invisible': [('nssf_vol', '=', False)], 'required': [('nssf_vol', '=', True)]}"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="nssf_vol_emp"
+                                       attrs="{'invisible': [('nssf_vol', '=', False)], 'required': [('nssf_vol', '=', True)]}"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="nssf_t3"/>
+                                <field name="nssf_t3_mem"
+                                       attrs="{'invisible': [('nssf_t3', '=', False)], 'required': [('nssf_t3', '=', True)]}"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="nssf_t3_emp"
+                                       attrs="{'invisible': [('nssf_t3', '=', False)], 'required': [('nssf_t3', '=', True)]}"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        </group>
+                    </xpath>
+                    <xpath expr="//div[@name='button_box']" position="inside">
+                        <button name="%(ke_hr_payroll.act_hr_employee_loan_request)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-money"
+                                groups="base.group_user">
+                            <field name="loan_count" widget="statinfo"
+                                   string="Loans"/>
+                        </button>
+                        <button name="%(ke_hr_payroll.ke_overtime_action)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-book"
+                                groups="base.group_user"
+                                context="{'search_default_employee_id': active_id, 'default_employee_id': active_id}"
+                                help="Employee Overtime">
+                            <field string="Overtime"
+                                   name="overtime_count"
+                                   widget="statinfo"/>
+                        </button>
+                        <button name="%(ke_hr_payroll.ke_advance_action)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-book"
+                                groups="base.group_user"
+                                context="{'search_default_employee_id': active_id, 'default_employee_id': active_id}"
+                                help="Employee Advance">
+                            <field string="Advance"
+                                   name="advance_count"
+                                   widget="statinfo"/>
+                        </button>
+                        <button name="%(ke_hr_payroll.action_p9_reporting_excel)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-file-excel-o"
+                                string="KRA P9 Form"
+                                groups="base.group_user"
+                                context="{'search_default_employee_id': active_id, 'default_employee_id': active_id}"
+                                help="Employee KRA P9 Form">
+                        </button>
+                    </xpath>
+<!--                    <button name="%(hr_contract.act_hr_employee_2_hr_contract)d"-->
+<!--                            position="attributes">-->
+<!--                        <attribute name="groups">base.group_user</attribute>-->
+<!--                    </button>-->
+<!--                    <button name="%(hr_payroll.act_hr_employee_payslip_list)d"-->
+<!--                            position="attributes">-->
+<!--                        <attribute name="groups">base.group_user</attribute>-->
+<!--                    </button>-->
+                    <!--<xpath expr="//button[@name='251']" position="attributes">
+                        <attribute name="groups">base.group_user</attribute>
+                    </xpath>
+                    <xpath expr="//button[@name='286']" position="attributes">
+                        <attribute name="groups">base.group_user</attribute>
+                    </xpath>-->
+                    <xpath expr="//field[@name='country_id']"
+                           position="attributes">
+                        <attribute name="required">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='identification_id']"
+                           position="attributes">
+                        <attribute name="required">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='gender']" position="attributes">
+                        <attribute name="required">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='job_id']" position="attributes">
+                        <attribute name="required">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='marital']"
+                           position="attributes">
+                        <attribute name="required">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='birthday']"
+                           position="attributes">
+                        <attribute name="required">False</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='department_id']"
+                           position="attributes">
+                        <attribute name="required">True</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='address_home_id']"
+                           position="after">
+                        <field name="personal_email" widget="email"/>
+                    </xpath>
+                    <xpath expr="//field[@name='category_ids']"
+                           position="before">
+                        <group>
+                            <field name="id" invisible="1"/>
+                            <field name="employee_no"
+                                   attrs="{'invisible': ['|', ('id', '=', False), ('payroll_no', '!=',False )]}"/>
+                            <field name="payroll_no"/>
+                        </group>
+                    </xpath>
+                    <xpath expr="//notebook" position="inside">
+                        <page string="Dependents">
+                            <field name="id" invisible="1"/>
+                            <field name="kins"
+                                   context="{'default_employee_id': id}">
+                                <tree>
+                                    <field name="id" invisible="1"/>
+                                    <field name="name"/>
+                                    <field name="relation"/>
+                                    <field name="birthday"/>
+                                    <field name="gender"/>
+                                    <field name="kin"/>
+                                    <field name="phone"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="deductions" string=" After Tax Deductions"
+                              groups="hr.group_hr_user">
+                            <field name="id" invisible="1"/>
+                            <field name="deductions"
+                                   context="{'default_employee_id': id}">
+                                <tree colors="red:amount==0">
+                                    <field name="id" invisible="1"/>
+                                    <field name="name"/>
+                                    <field name="deduction_id" invisible="1"/>
+                                    <field name="rule_id"/>
+                                    <field name="computation"/>
+                                    <field name="fixed"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="reliefs" string="Tax Relief"
+                              groups="hr.group_hr_user">
+                            <field name="reliefs"
+                                   context="{'default_employee_id': id}">
+                                <tree colors="red:amount==0">
+                                    <field name="relief_id"/>
+                                    <field name="rule_id"/>
+                                    <field name="computation"/>
+                                    <field name="fixed"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

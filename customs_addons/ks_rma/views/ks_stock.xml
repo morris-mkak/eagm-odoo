@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!--    Added an RMA order field in the stock.picking model-->
+    <record id="ks_stock_picking_view_form_inherit" model="ir.ui.view">
+        <field name="name">ks.stock.picking.view.form.inherited</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/group[1]" position="inside">
+                <group string="RMA Panel">
+                    <field name="ks_rma_id"/>
+                </group>
+            </xpath>
+            <xpath expr="//form[1]/header[1]" position="inside">
+                <button name="action_ks_rma_order" type="object" class="btn btn-primary" string="Create RMA"
+                        attrs="{'invisible': ['|',('state','!=','done'), ('ks_rma_id','!=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Added  an RMA operation field in the stock.picking.type model -->
+    <record id="ks_stock_picking_type_view_form_inherit" model="ir.ui.view">
+        <field name="name">ks.stock.picking.type.view.form.inherited</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/group[1]" position="inside">
+                <group string="RMA Operations">
+                    <field name="ks_is_rma_operation"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

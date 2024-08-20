@@ -1,0 +1,50 @@
+<odoo>
+    <data>
+        <record id="brand_summary_report_form" model="ir.ui.view">
+            <field name="name">Brand Summary Report</field>
+            <field name="model">brand.report.summary</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Brand Summary Report">
+                    <field name="brand_summary_report_printed"
+                           invisible="1"/>
+                    <group string="Brand Summary"
+                           attrs="{'invisible':[('brand_summary_report_printed','=',True)]}">
+                        <group>
+                            <field name="date_from"/>
+                        </group>
+                        <group>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible':[('brand_summary_report_printed','=',False)]}">
+                        <field name="file_name" invisible="1"/>
+                        <field name="loan_summary_file" readonly="1"
+                               filename="file_name"/>
+                    </group>
+                    <footer>
+                        <button string="Generate"
+                                name="action_print_brand_summary_report"
+                                type="object" class="btn-primary"
+                        />
+                        <button string="Cancel" class="oe_link"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="brand_summary_report_view_action"
+                model="ir.actions.act_window">
+            <field name="name">Brand Summary</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">brand.report.summary</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem name="Brand Report Summary"
+                  id="brand_report_summary"
+                  action="brand_summary_report_view_action"
+                  sequence="109"
+                  parent="sale.menu_sale_report"/>
+    </data>
+</odoo>

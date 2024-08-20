@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ks_rma_view_order_pivot" model="ir.ui.view">
+        <field name="name">ks.rma.report.pivot</field>
+        <field name="model">ks.rma.report</field>
+        <field name="arch" type="xml">
+            <pivot string="RMA Analysis" disable_linking="True">
+                <field name="ks_team_id" type="col"/>
+                <field name="ks_date_requested" interval="month" type="row"/>
+                <field name="ks_returned_qty" type="measure"/>
+                <field name="ks_refund_qty" type="measure"/>
+                <field name="ks_refund_amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+
+    <record id="ks_rma_view_order_graph" model="ir.ui.view">
+        <field name="name">ks.rma.report.graph</field>
+        <field name="model">ks.rma.report</field>
+        <field name="arch" type="xml">
+            <graph string="RMA Analysis" type="line">
+                <field name="ks_date_requested" type="row" interval="day"/>
+                <field name="ks_returned_qty" type="measure"/>
+                <field name="ks_refund_qty" type="measure"/>
+                <field name="ks_refund_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="ks_rma_view_order_graph_search" model="ir.ui.view">
+        <field name="name">ks.rma.report.search</field>
+        <field name="model">ks.rma.report</field>
+        <field name="arch" type="xml">
+            <search string="RMA Analysis">
+                <field name="ks_date_requested"/>
+                <filter name="RMA Request" string="RMA Request" domain="[('state','=', 'draft')]"/>
+                <filter name="RMA Orders" string="RMA Orders"
+                        domain="[('state','not in',('draft', 'cancel', 'sent', 'closed'))]"/>
+                <separator/>
+                <field name="ks_user_id"/>
+                <field name="ks_team_id"/>
+                <field name="ks_product_id"/>
+                <field name="ks_picking_id"/>
+                <field name="ks_partner_id"/>
+                <field name="ks_sale_order_id"/>
+                <field name="ks_purchase_order_id"/>
+                <field name="ks_date_confirmed"/>
+                <field name="ks_confirmed_user_id"/>
+                <field name="ks_is_refund"/>
+                <field name="ks_is_return"/>
+                <group expand="0" string="Extended Filters">
+                    <field name="ks_company_id" groups="base.group_multi_company"/>
+                </group>
+                <group expand="1" string="Group By">
+                    <filter string="RMA Creation Method" name="selection" context="{'group_by':'ks_selection'}"/>
+                    <filter string="Assigned User" name="User" context="{'group_by':'ks_user_id'}"/>
+                    <filter string="Assigned Team" name="rma_channel" context="{'group_by':'ks_team_id'}"/>
+                    <filter string="Customer" name="Customer" context="{'group_by':'ks_partner_id'}"/>
+                    <filter string="Product" name="Product" context="{'group_by':'ks_product_id'}"/>
+                    <filter name="status" string="Status" context="{'group_by':'state'}"/>
+                    <filter string="Company" name="company" groups="base.group_multi_company"
+                            context="{'group_by':'ks_company_id'}"/>
+                    <separator/>
+                    <filter string="Request Date" name="date" context="{'group_by':'ks_date_requested:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="ks_action_rma_order_report_all" model="ir.actions.act_window">
+        <field name="name">RMA Analysis</field>
+        <field name="res_model">ks.rma.report</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="view_id"></field>  <!-- force empty -->
+        <field name="search_view_id" ref="ks_rma_view_order_graph_search"/>
+        <field name="context">{'search_default_selection':1, 'search_default_date':1,
+            'group_by_no_leaf':1,'group_by':[]}
+        </field>
+        <field name="help">This report performs analysis on your RMA request.</field>
+    </record>
+</odoo>

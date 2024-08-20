@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="kenya_cu_invoice" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='informations']" position="after">
+			<div id="tra_info" class="row mt32 mb32" t-if="o.company_id.country_id.code=='TZ'">
+
+				<div class="col-auto col-3 mw-100 mb-2"   name="l10n_tz_tvfd_verification_code">
+					<strong>TRA verification Code:</strong>
+					 <p class="m-0" t-field="o.l10n_tz_tvfd_verification_code"/>
+
+				</div>
+
+			</div>
+        </xpath>
+
+    </template>
+	<template id="ke_qr_invoice" inherit_id="account.report_invoice_document">
+		<xpath expr="//div[@class='clearfix']" position="after">
+
+			 <div style="text-align: right;" class="col-auto col-3 mw-100 mb-2 text-align-right"
+				  t-if="o.l10n_tz_tvfd_qr and o.company_id.country_id.code=='TZ'"  name="l10n_tz_tvfd_qr">
+                 <img width="150" height="150" t-att-src="'data:image/jpg;base64,%s'%(o.l10n_tz_tvfd_qr.strip())" />
+
+            </div>
+
+		</xpath>
+	</template>
+
+</odoo>

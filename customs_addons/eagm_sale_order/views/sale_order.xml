@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="inherit_sale_view_order_form" model="ir.ui.view">
+            <field name="name">inherit.sale.view.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree"
+                       position="attributes">
+                    <attribute name="class">custom_class</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree//field[@name='name']"
+                       position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                  <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']"
+                       position="after">
+                    <field name="product_code_id" style="width: 200px !important;, max-width: 200px !important;"/>
+                </xpath>
+                 <xpath expr="//field[@name='order_line']/tree//field[@name='product_code_id']"
+                       position="attributes">
+                    <attribute name="class">custom_class</attribute>
+                </xpath>
+                <xpath expr="//div[@class='oe_button_box']" position="after">
+                    <field name="same_client_order_ref" invisible="1"/>
+                    <div role="alert" class="alert alert-danger"
+                         style="height:40px, width:30px, margin-bottom:1px;"
+                         attrs="{'invisible':[('same_client_order_ref','=',False)]}">
+                        This Record has a duplicate Customer Reference Number
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Benefits  Form view-->
+        <record id="ke_benefits_form" model="ir.ui.view">
+            <field name="name">ke.hr.benefits.form</field>
+            <field name="model">ke.benefits</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                        <group name="benefit" string="Non Cash Benefits">
+                            <group>
+                                <field name="benefit_id"/>
+                                <field name="computation"/>
+                            </group>
+                            <group>
+                                <field name="contract_id"/>
+                                <field name="rule_id" readonly="1"/>
+                                <field name="fixed"
+                                       attrs="{'invisible': [('computation', '!=', 'fixed')], 'required': [('computation', '=', 'fixed')]}"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="amount" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                        <notebook
+                                attrs="{'invisible':[('computation','!=','formula')]}">
+                            <page name="formula" string="Formula">
+                                <field name="formula"
+                                       attrs="{'required': [('computation','=','formula')]}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

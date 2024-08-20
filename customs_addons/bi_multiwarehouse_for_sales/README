@@ -1,0 +1,14 @@
+date 29/06/21
+version 14.0.0.0
+improvement:-
+	- Add Button in sales configuration setting
+    - Add Warehouse Field in Product
+    - Add action_confirm method for create multiple warehouse sales
+
+date 05/07/21
+version 14.0.0.1
+improvement:-
+	- Some Bug Solved
+
+14.0.0.2 (2-8-2021) : Fixed all issues and change the whole code.
+    

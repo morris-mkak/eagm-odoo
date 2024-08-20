@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+<odoo>
+    <data>
+        <record id="view_evaluation_record_form" model="ir.ui.view">
+            <field name="name">evaluation.record.form</field>
+            <field name="model">evaluation.record</field>
+            <field name="arch" type="xml">
+                <form string="Evaluation Record Details" >
+                    <header>
+                        <button name="submit_evaluation" string="Submit" type="object" class="oe_highlight" states="draft"/>
+                        <button name="confirm_evaluation" string="Confirm Now" type="object" class="oe_highlight btn btn-success" attrs="{'invisible': [('state', '!=', 'confirmation')]}"/>
+                        <button name="approve_evaluation" string="Approve" type="object" class="oe_highlight" states="approval" groups="project.group_project_manager"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="get_task_summary" type="object" class="oe_stat_button" icon="fa-tasks"  string="Task Summary" help="Task Summary"/>
+                            <button name="get_leaves" type="object" class="oe_stat_button" icon="fa-calendar">
+                                <field name="total_leaves" widget="statinfo" string="Leaves" help="Total Leaves"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <font color="#3b5998">
+                                    <field name="display_name" attrs="{'invisible': [('id', '=', False)]}" readonly="1"/>
+                                </font>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="id" invisible="1"/>
+                                <field name="is_manager" invisible="1"/>
+                                <field name="user_id" readonly="1" options="{'no_create_edit': True, 'no_open': True, 'no_create': True}"/>
+                                <field name="employee_id" invisible="1"/>
+                                <field name="department_id" readonly="1" options="{'no_create_edit': True, 'no_open': True, 'no_create': True}"/>
+                                <field name="job_id" readonly="1" options="{'no_create_edit': True, 'no_open': True, 'no_create': True}"/>
+                                <field name="total_days" readonly="1"/>
+                            </group>
+                            <group>
+                                <label for="start_date" string="Duration"/>
+                                <div>
+                                    <field name="start_date" class="oe_inline" attrs="{'readonly': [('state', 'not in', ('draft'))]}"/> - <field name="end_date" attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                                </div>
+                                <field name="create_date" readonly="1" attrs="{'invisible': [('create_date', '=', False)]}"/>
+                                <field name="create_uid" readonly="1" options="{'no_create_edit': True, 'no_open': True, 'no_create': True}" attrs="{'invisible': [('create_uid', '=', False)]}"/>
+                            </group>
+                        </group>
+                        <label for="remark"/>
+                        <field name="remark" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <separator for="work_summary" string="Work Summary" name="work_summary"/>
+                        <field name="work_summary" widget="html" nolabel="1"/>
+                        <label for="evaluation_user_inputs" string="User Inputs" attrs="{'invisible': [('id', '=', False)]}"/>
+                        <field name="evaluation_user_inputs" attrs="{'invisible': [('id', '=', False)], 'readonly': ['|', ('is_manager', '!=', True), ('state', 'not in', ['confirmation'])]}">
+                            <tree string="User Inputs" create="false" delete="false">
+                                <field name="question_id"/>
+                                <field name="answer"/>
+                            </tree>
+                            <form string="User Input">
+                                <sheet>
+                                    <group>
+                                        <field name="question_id" readonly="1" options="{'no_open': True}"/>
+                                        <field name="question_type" invisible="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="answer" invisible="1"/>
+                                        <field name="free_text" string="Answer" attrs="{'invisible': [('question_type', '!=', 'free_text')]}"/>
+                                        <field name="text_box" string="Answer" attrs="{'invisible': [('question_type', '!=', 'textbox')]}"/>
+                                        <field name="numerical_box" string="Answer" attrs="{'invisible': [('question_type', '!=', 'numerical_box')]}"/>
+                                        <field name="date_box" string="Answer" attrs="{'invisible': [('question_type', '!=', 'date')]}"/>
+                                        <field name="datetime_box" string="Answer" attrs="{'invisible': [('question_type', '!=', 'datetime')]}"/>
+                                        <field name="simple_choice" string="Answer" options="{'no_create': True, 'no_create_edit': True, 'no_open': True}" domain="[('question_id', '=', question_id)]" attrs="{'invisible': [('question_type', '!=', 'simple_choice')]}"/>
+                                        <field name="multiple_choice" string="Answer" options="{'no_create': True, 'no_create_edit': True, 'no_open': True}" domain="[('question_id', '=', question_id)]" widget="many2many_tags" attrs="{'invisible': [('question_type', '!=', 'multiple_choice')]}"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_evaluation_record_form_inherit" model="ir.ui.view">
+            <field name="name">evaluation.record.form</field>
+            <field name="model">evaluation.record</field>
+            <field name="inherit_id" ref="employee_evaluation_management.view_evaluation_record_form"/>
+            <field name="groups_id" eval="[(4, ref('project.group_project_manager'))]"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                    <attribute name="attrs">{'readonly': [('state', 'not in', ['draft'])]}</attribute>
+                </field>
+                <field name="evaluation_user_inputs" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'in', ['draft', 'done'])]}</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_evaluation_record_tree" model="ir.ui.view">
+            <field name="name">evaluation.record.tree</field>
+            <field name="model">evaluation.record</field>
+            <field name="arch" type="xml">
+                <tree string="Evaluation Records" decoration-bf="message_unread==True" decoration-danger="state == 'confirmation'" decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-warning="state == 'approval'">
+                    <field name="message_unread" invisible="1"/>
+                    <field name="user_id"/>
+                    <field name="department_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="manager"/>
+                    <field name="state"/>
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_evaluation_record_pending_tree" model="ir.ui.view">
+            <field name="name">evaluation.record.pending.tree</field>
+            <field name="model">evaluation.record</field>
+            <field name="arch" type="xml">
+                <tree create="0" string="Pending Evaluation Records" decoration-bf="message_unread == True" decoration-danger="state == 'confirmation'" decoration-warning="state == 'approval'">
+                    <field name="message_unread" invisible="1"/>
+                    <field name="department_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="manager"/>
+                    <field name="state"/>
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_evaluation_record_serach" model="ir.ui.view">
+            <field name="name">evaluation.record.search</field>
+            <field name="model">evaluation.record</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Evaluations">
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="user_id"/>
+                    <field name="department_id"/>
+                    <field name="manager"/>
+                    <filter name="my_record" string="My Reports" domain="[('user_id', 'in', [uid])]" help="My Records"/>
+                    <filter name="my_primary_members" string="My Primary Members Reports" domain="[('manager', 'in', [uid])]" help="My Primary Members Reports"/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]" help="Draft"/>
+                    <filter name="confirmation" string="Waiting For Confirmation" domain="[('state', '=', 'confirmation')]" help="Waiting For Confirmation"/>
+                    <filter name="approval" string="Waiting For Approval" domain="[('state', '=', 'approval')]" help="Waiting For Approval"/>
+                    <filter name="done" string="Done" domain="[('state', '=', 'done')]" help="Done"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_manager" string="Manager" icon="terp-product" context="{'group_by': 'manager'}"/>
+                        <filter name="group_by_department_id" string="Department" icon="terp-product" context="{'group_by': 'department_id'}"/>
+                        <filter name="group_by_state" string="State" icon="terp-product" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_evaluation_record" model="ir.actions.act_window">
+            <field name="name">My Reports</field>
+            <field name="res_model">evaluation.record</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_evaluation_record_tree"/>
+            <field name="context">{'default_user_id': uid}</field>
+            <field name="domain">[('user_id', '=', uid)]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to create your evaluation report.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_evaluation_record_pending" model="ir.actions.act_window">
+            <field name="name">Pending Evaluation</field>
+            <field name="res_model">evaluation.record</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_evaluation_record_pending_tree"/>
+            <field name="context">{'search_default_my_primary_members': 1}</field>
+            <field name="domain">[('state', 'in', ['confirmation', 'approval'])]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to create your evaluation report.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_evaluation_record_all" model="ir.actions.act_window">
+            <field name="name">Evaluation History</field>
+            <field name="res_model">evaluation.record</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_evaluation_record_tree"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to create your evaluation report.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_evaluation" parent="hr.menu_hr_root" sequence="6" name="Employee Evaluations"/>
+
+        <menuitem id="menu_evaluation_record" action="action_evaluation_record" parent="menu_evaluation" sequence="1" name="My Reports"/>
+
+        <menuitem id="menu_evaluation_record_pending" action="action_evaluation_record_pending" parent="menu_evaluation" sequence="2" name="Pending Evaluations"/>
+
+        <menuitem id="menu_evaluation_record_all" action="action_evaluation_record_all" parent="menu_evaluation" sequence="3" name="Evaluation History"/>
+    </data>
+</odoo>

@@ -1,0 +1,8 @@
+<odoo>
+    <template priority="135" id="ks_rma_frontend" inherit_id="web.assets_frontend" name="Front Assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/ks_rma/static/src/js/ks_portal_page.js"/>
+            <link rel="stylesheet" type="text/scss" href="/ks_rma/static/src/scss/ks_portal.scss"/>
+        </xpath>
+    </template>
+</odoo>

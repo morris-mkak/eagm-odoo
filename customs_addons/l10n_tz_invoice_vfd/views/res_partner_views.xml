@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_view_form" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit.l10n_tz_invoice_vfd</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+
+                     <field name="l10n_tz_invoice_vfd_id_type" help="User Identification"/>
+                <field name="l10n_tz_invoice_vfd_id_number" help=" ID number"/>
+                <field name="l10n_tz_vat_no" help="VRN"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

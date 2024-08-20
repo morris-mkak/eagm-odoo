@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!--    Adding the menu for the ks_rma module -->
+    <menuitem id="ks_rma_menu_root" name="RMA"
+              web_icon="ks_rma,static/description/icon.png"
+              action="ks_rma_action_orders"/>
+
+    <!--    Adding the menu (Orders) -->
+    <menuitem id="ks_rma_order_root" name="Orders" parent="ks_rma_menu_root" sequence="10"/>
+    <!--    Orders Submenus -->
+    <menuitem id="ks_rma_order_request" name="RMA Request" parent="ks_rma_order_root"
+              action="ks_rma_action_order_request" sequence="10"/>
+    <menuitem id="ks_rma_order_orders" name="RMA Orders" parent="ks_rma_order_root"
+              action="ks_rma_action_order_orders" sequence="20"/>
+
+
+    <menuitem id="ks_rma_order_inventory" name="Inventory" parent="ks_rma_menu_root" sequence="20"/>
+    <menuitem id="ks_rma_order_inventory_transfer" name="RMA Transfers" parent="ks_rma_order_inventory"
+              action="rma_action_picking_tree_all" sequence="10"/>
+
+    <!--    Reporting Menus -->
+    <menuitem id="ks_rma_order_reporting" name="Reporting" parent="ks_rma_menu_root" sequence="30"/>
+    <menuitem id="ks_rma_order_reporting_analysis" name="RMA Analysis" parent="ks_rma_order_reporting"
+              action="ks_action_rma_order_report_all" sequence="10"/>
+    <!--    Adding the Configuration Menu-->
+    <menuitem id="ks_rma_order_config" name="Configuration" parent="ks_rma_menu_root" sequence="50"/>
+    <!--    Configuration Submenu-->
+    <menuitem id="ks_rma_order_settings" name="Settings" parent="ks_rma_order_config"
+              action="ks_rma_config_settings_action" sequence="10"/>
+    <menuitem id="ks_rma_order_operation_type" name="Operations Types" parent="ks_rma_order_config"
+              action="stock.action_picking_type_list" sequence="20"/>
+</odoo>

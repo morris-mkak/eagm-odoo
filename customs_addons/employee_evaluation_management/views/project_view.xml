@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+<odoo>
+    <data>
+        <record id="action_project_task_record" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">tree,kanban,calendar,form</field>
+            <field name="context">{'search_default_my_tasks': 1}</field>
+            <field name="search_view_id" ref="project.view_task_search_form"/>
+        </record>
+
+        <record id="view_project_project_work_type_form" model="ir.ui.view">
+            <field name="name">project.project.form</field>
+            <field name="model">project.project</field>
+            <field name='inherit_id' ref='project.edit_project'/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page/group/group/field[@name='user_id']" position="after">
+                    <field name="work_type_id" string="Work Type" options="{'no_create_edit': True, 'no_open': True}" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_project_project_manager_work_type_form" model="ir.ui.view">
+            <field name="name">project.project.manager.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="employee_evaluation_management.view_project_project_work_type_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('project.group_project_manager')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='work_type_id']" position="attributes">
+                    <attribute name="readonly">False</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_project_task_work_type_form" model="ir.ui.view">
+            <field name="name">project.task.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="after">
+                    <group name="work_info" string="Work status">
+                        <group name="task_group3">
+                            <field name="work_type_id" placeholder="e.g. Testing" options="{'no_create_edit': True,'no_open': True,'no_create': True}"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_project_task_work_type_tree" model="ir.ui.view">
+             <field name="name">project.task.tree</field>
+             <field name="model">project.task</field>
+             <field name="inherit_id" ref="project.view_task_tree2"/>
+             <field name="arch" type="xml">
+                 <field name="stage_id" position="after">
+                     <field name="work_type_id" string="Work Type" invisible="1"/>
+                 </field>
+             </field>
+         </record>
+
+        <record id="view_work_type_tree" model="ir.ui.view">
+            <field name="name">Work Types</field>
+            <field name="model">work.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Work Type">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="allow_manual_entry"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_work_type" model="ir.actions.act_window">
+            <field name="name">Work Type</field>
+            <field name="res_model">work.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_work_type_tree"/>
+        </record>
+        
+        <menuitem id="menu_work_type" action="action_work_type" parent="project.menu_project_config" name="Work Types" sequence="100"/>
+    </data>
+</odoo>

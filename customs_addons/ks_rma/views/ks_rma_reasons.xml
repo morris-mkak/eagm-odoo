@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+                <!--    Tree view for return reasons-->
+    <record id="ks_rma_view_return_reasons_tree" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.tree</field>
+        <field name="model">ks.return.reasons</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ks_return_reason" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+<!--                  Form view for return reasons-->
+    <record id="ks_rma_view_return_reasons_form" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.form</field>
+        <field name="model">ks.return.reasons</field>
+        <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                    <group>
+                    <field name="ks_return_reason" optional="show"/>
+                    </group>
+                    </sheet>
+                </form>
+        </field>
+    </record>
+
+        <!--    Tree view of refund reasons-->
+    <record id="ks_rma_view_refund_reasons_tree" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.tree</field>
+        <field name="model">ks.refund.reasons</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ks_refund_reason" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+              <!--    Form view for refund reasons-->
+    <record id="ks_rma_view_refund_reasons_form" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.form</field>
+        <field name="model">ks.refund.reasons</field>
+        <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                            <group>
+                    <field name="ks_refund_reason" optional="show"/>
+                            </group>
+                    </sheet>
+                </form>
+        </field>
+    </record>
+
+                    <!--    Tree view for return reasons-->
+    <record id="ks_rma_view_replace_reasons_tree" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.tree</field>
+        <field name="model">ks.replace.reasons</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ks_replace_reason" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+<!--                  Form view for return reasons-->
+    <record id="ks_rma_view_replace_reasons_form" model="ir.ui.view">
+        <field name="name">ks.rma.view.order.form</field>
+        <field name="model">ks.replace.reasons</field>
+        <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                    <group>
+                    <field name="ks_replace_reason" optional="show"/>
+                    </group>
+                    </sheet>
+                </form>
+        </field>
+    </record>
+
+                <!--    Action for the return menu-->
+    <record id="ks_rma_action_order_return" model="ir.actions.act_window">
+        <field name="name">Return reason</field>
+        <field name="res_model">ks.return.reasons</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your Return reasons here.
+            </p>
+        </field>
+    </record>
+
+          <!--   Action of refund menu-->
+    <record id="ks_rma_action_order_refund" model="ir.actions.act_window">
+        <field name="name">Refund reason</field>
+        <field name="res_model">ks.refund.reasons</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your Refund reasons here.
+            </p>
+        </field>
+    </record>
+
+        <record id="ks_rma_action_order_replace" model="ir.actions.act_window">
+        <field name="name">Replace reason</field>
+        <field name="res_model">ks.replace.reasons</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your Replace reasons here.
+            </p>
+        </field>
+    </record>
+
+        <!--    Reasons menu for return and refund-->
+    <menuitem id="ks_rma_reasons_root" name="Reasons" parent="ks_rma_menu_root" sequence="40"/>
+    <!--    Submenu of reasons that is refund and return-->
+    <menuitem id="ks_rma_order_return" name="Reasons for return" parent="ks_rma_reasons_root"
+              action="ks_rma.ks_rma_action_order_return" sequence="10"/>
+    <menuitem id="ks_rma_order_refund" name="Reasons for refund" parent="ks_rma_reasons_root"
+              action="ks_rma.ks_rma_action_order_refund" sequence="20"/>
+    <menuitem id="ks_rma_order_replace" name="Reasons for replace" parent="ks_rma_reasons_root"
+              action="ks_rma.ks_rma_action_order_replace" sequence="30"/>
+</odoo>

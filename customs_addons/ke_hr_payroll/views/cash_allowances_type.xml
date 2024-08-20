@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+         <!-- Cash Allowances Type Action-->
+        <record id="ke_cash_allowances_type_action"
+                model="ir.actions.act_window">
+            <field name="name">Types of Cash Allowances</field>
+            <field name="res_model">ke.cash.allowances.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_ke_cash_allowances_type"
+                  parent="hr_work_entry_contract.menu_hr_payroll_configuration"
+                  name="Cash Allowances" sequence="101"
+                  action="ke_cash_allowances_type_action"
+                  groups="hr.group_hr_manager"/>
+         <!-- Cash Allowances Type Form view-->
+        <record id="ke_cash_allowances_type_form" model="ir.ui.view">
+            <field name="name">ke.hr.cash.allowances.type.form</field>
+            <field name="model">ke.cash.allowances.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <field name="id" invisible="True"/>
+                        <group name="allowances_type" string="Cash Allowances">
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="rule_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"
+                               widget="mail_followers"
+                               groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <!-- Cash Allowances Type Tree view-->
+        <record id="ke_cash_allowances_type_tree" model="ir.ui.view">
+            <field name="name">ke.hr.cash.allowances.type.tree</field>
+            <field name="model">ke.cash.allowances.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="rule_id"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

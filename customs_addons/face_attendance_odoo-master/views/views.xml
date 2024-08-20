@@ -1,0 +1,32 @@
+<odoo>
+  <data>
+      <record model="ir.ui.view" id="face_attendance_employee_list_view">
+          <field name="name">Face Attendance Employee List View</field>
+          <field name="model">hr.employee</field>
+          <field name="arch" type="xml">
+              <tree>
+                  <field name="name" />
+                  <field name="user_id"/>
+              </tree>
+          </field>
+      </record>
+
+     <record model="ir.ui.view" id="face_attendance_employee_form">
+        <field name="name">face_attendance_employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+          <xpath expr="/form/*" position="before">
+            <header>
+              <camera-button name="get_employee_model_img" string="Take Employee Photo" type="object"/>
+            </header>
+          </xpath>
+          <field name="work_phone" position="after">
+            <field name="model_photo"/>
+          </field>
+        </field>
+      </record>
+
+  </data>
+</odoo>
+

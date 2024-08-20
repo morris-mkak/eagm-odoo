@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--    Adding the res.config.settings for the RMA module-->
+    <record id="ks_res_config_settings_view_form_inherit" model="ir.ui.view">
+        <field name="name">ks.res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="RMA" string="RMA" data-key="ks_rma">
+                    <h2>RMA Configurations</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="ks_is_rma_portal_access"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="ks_is_rma_portal_access"/>
+                                <div class="text-muted">
+                                    RMA Pages On Portal
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="ks_is_rma_approval_process_access"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="ks_is_rma_approval_process_access"/>
+                                <div class="text-muted">
+                                    Approval Process access
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="col-12">Default Values For RMA Creation From Portal</h2>
+                    <div class="col-12 col-lg-8 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label class="o_light_label col-lg-3" string="Default RMA Team"
+                                           for="ks_rma_team_id"/>
+                                    <field class="col-lg-4 pl-0 pr-0" name="ks_rma_team_id"
+                                           kanban_view_ref="%(sales_team.crm_team_view_kanban)s"/>
+                                </div>
+                                <div class="row">
+                                    <label class="o_light_label col-lg-3" for="ks_rma_user_id"/>
+                                    <field class="col-lg-4 pl-0 pr-0" name="ks_rma_user_id"/>
+                                </div>
+                                <div class="row">
+                                    <label class="o_light_label col-lg-3" for="ks_warehouse_id"/>
+                                    <field name="ks_warehouse_id"/>
+                                </div>
+                                <div class="row">
+                                    <label class="o_light_label col-lg-3" for="ks_policy"/>
+                                    <field class="col-lg-4" name="ks_policy"/>
+                                </div>
+                                <div class="row">
+                                    <label class="o_light_label col-lg-3" for="ks_terms"/>
+                                    <field class="col-lg-4" name="ks_terms" widget="text"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Adding the action view of the stock.picking.type model-->
+    <record id="ks_rma_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module':'ks_rma'}</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,215 @@
+<odoo>
+    <template id="ks_rma_sale_order_button" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//div[@id='introduction']" position="inside">
+            <t t-set="count" t-value="0"/>
+            <t t-if="request.env['ir.config_parameter'].sudo().get_param('ks_rma.is_rma_portal_access')">
+                <t t-foreach="sale_order.picking_ids.filtered(lambda picking: picking.state == 'done')" t-as="p">
+                    <t t-if="count==0">
+                        <t t-set="ks_picking_id" t-value="p"></t>
+                        <t t-if="ks_picking_id">
+                            <t t-if="ks_picking_id.ks_rma_id">
+                                <a name="RMA Button"
+                                   class="btn btn-primary ks_view_rma_form"
+                                   type="button" target="new"
+                                   t-att-href="ks_picking_id.ks_rma_id.get_portal_url()">View RMA
+                                </a>
+                            </t>
+                            <t t-else="">
+                                <t t-foreach="sale_order.picking_ids.filtered(lambda picking: picking.picking_type_id.code != 'internal')" t-as="i">
+                                <t t-if="i.state == 'done'">
+                                <button name="RMA Button"
+                                        class="btn btn-primary ks_open_rma_form"
+                                        type="button"
+                                >Request RMA
+                                </button>
+                                </t></t>
+                                <t t-call="ks_rma.ks_rma_sale_order_link"></t>
+                            </t>
+                        </t>
+                    </t>
+                    <t t-set="count" t-value="count+1"/>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="ks_rma_sale_order_link">
+        <div class="modal fade" id="ks_open_sale_rma_form" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">RMA form</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="false">&amp;times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <label for="ks_partner_id">Partner</label>
+                                <input type="text" class="form-control ks_partner_id"
+                                       t-att-id="sale_order.partner_id.id"
+                                       t-att-value="sale_order.partner_id.display_name" disabled="True"
+                                       placeholder="Enter Partner Name"/>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ks_sale_order_id">Sale order</label>
+                                <input type="text" class="form-control ks_sale_order_id"
+                                       t-att-id="sale_order.id" t-att-value="sale_order.name"
+                                       placeholder="Sale order" disabled="True"/>
+                            </div>
+                            <div class="col-md-6">
+                                <t t-if="ks_picking_id">
+                                    <label for="ks_picking_id">Picking</label>
+                                    <input type="text" class="form-control ks_picking_id"
+                                           t-att-id="ks_picking_id.id" placeholder="Picking"
+                                           disabled="True" t-att-value="ks_picking_id.name"/>
+                                </t>
+                            </div>
+                            <div class="col-md-6">
+                                <t t-if="ks_picking_id">
+                                    <label for="ks_picking_type_id">Operation Type</label>
+                                    <input type="text" class="form-control ks_picking_type_id"
+                                           t-att-id="ks_picking_id.picking_type_id.id" placeholder="Picking Type"
+                                           disabled="True" t-att-value="ks_picking_id.picking_type_id.name"/>
+                                </t>
+                            </div>
+                            <div class="col-md-12 d-none">
+                                <t t-if="ks_picking_id.picking_type_id and ks_picking_id.picking_type_id.return_picking_type_id">
+                                    <label for="ks_return_picking_type_id">Operation Type</label>
+                                    <input type="text" class="form-control ks_return_picking_type_id"
+                                           t-att-id="ks_picking_id.picking_type_id.return_picking_type_id.id"
+                                           placeholder="Return Picking Type"
+                                           disabled="True"
+                                           t-att-value="ks_picking_id.picking_type_id.return_picking_type_id.name"/>
+                                </t>
+                            </div>
+                        </div>
+
+
+                        <div class="row pb-4">
+                            <div class="col-md-3 pr-0">
+                                <span>RMA Request Operations</span>
+                            </div>
+                            <div class="col-md-3 form-check ks_refund_div">
+                                <label class="form-check-label" for="ks_is_refund">
+                                    Is Refund
+                                </label>
+                                <input class="form-check-input ml-2" type="checkbox" value="" id="ks_is_refund"/>
+                            </div>
+                            <div class="col-md-3 form-check ks_return_div">
+                                <label class="form-check-label" for="ks_is_return">
+                                    Is Return
+                                </label>
+                                <input class="form-check-input ml-2" type="checkbox" value="" id="ks_is_return"/>
+                            </div>
+                            <div class="col-md-3 form-check ks_replace_div">
+                                <label class="form-check-label" for="ks_is_replace">
+                                    Is Replace
+                                </label>
+                                <input class="form-check-input ml-2" type="checkbox" value="" id="ks_is_replace"/>
+                            </div>
+                        </div>
+                        <table class="table table-sm" id="ks_rma_line_table">
+                            <span class="pb-2">RMA Lines</span>
+                            <thead class="bg-100 pt-4">
+                                <tr>
+                                    <th>
+                                        Select
+                                    </th>
+                                    <th class="text-left">Products</th>
+                                    <th class="text-right">Demand Quantity</th>
+                                    <th class="text-right ks_return_qty_tr d-none">Return Quantity</th>
+                                    <th class="text-right ks_refund_qty_tr d-none">Refund Quantity</th>
+                                    <th class="text-right ks_replace_qty_tr d-none">Replace Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody class="rma_line_table_body">
+                                <t t-foreach="ks_picking_id.move_line_ids_without_package" t-as="line">
+                                    <tr class="bg-200 ks_product_line_row">
+                                        <td class="ks_checkbox_rma_line">
+                                            <input class="form-check-input ml-4" type="checkbox" id="rma_line_checkbox"
+                                                   checked="checked"/>
+                                        </td>
+                                        <td t-att-id="line.product_id.id" class="ks_product_id">
+                                            <span t-esc="line.product_id.name"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <div id="ks_demand_qty">
+                                                <span t-esc="line.qty_done"/>
+                                            </div>
+                                        </td>
+                                        <td class="text-right ks_return_qty_td d-none">
+                                            <div id="ks_return_qty">
+                                                <input class="ks_return_qty_value w-25" type="text"
+                                                       t-att-value="line.qty_done"/>
+                                            </div>
+                                        </td>
+                                        <td class="text-right ks_refund_qty_td d-none">
+                                            <div id="ks_refund_qty">
+                                                <input class="ks_refund_qty_value w-25" type="text"
+                                                       t-att-value="line.qty_done"/>
+                                            </div>
+                                        </td>
+                                        <td class="text-right ks_replace_qty_td d-none">
+                                            <div id="ks_refund_qty">
+                                                <input class="ks_replace_qty_value w-25" type="text"
+                                                       t-att-value="line.qty_done"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div class="row pb-4">
+                            <div class="col-md-12 mb-1">
+                                <span>RMA Notes</span>
+                                <br/>
+
+                                <input type="text" class=" form-control ks_rma_notes"
+                                       placeholder="Add a description for your RMA Order"></input>
+                            </div>
+                            <div class="col-md-4 mb-1  return d-none">
+                                <label class="form-check-label" for="ks_reason_return" id="return">Reason for returning
+                                </label>
+                                <select class="form-control ks_rma_return_reason" id="return">
+                                    <t t-foreach="sale_order.get_data_return()" t-as="p">
+                                        <option t-att-id="p.id">
+                                            <t t-esc="p.ks_return_reason"></t>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-1  refund d-none">
+                                <label class="form-check-label" for="ks_is_refund">Reason for refunding</label>
+                                <select class="form-control ks_rma_refund_reason" id="refund">
+                                    <t t-foreach="sale_order.get_data_refund()" t-as="p">
+                                        <option t-att-id="p.id">
+                                            <t t-esc="p.ks_refund_reason"></t>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-1 replace d-none">
+                                <label class="form-check-label" for="ks_is_replace">Reason for replacing</label>
+                                <select class="form-control ks_rma_replace_reason" id="refund">
+                                    <t t-foreach="sale_order.get_data_replace()" t-as="p">
+                                        <option t-att-id="p.id">
+                                            <t t-esc="p.ks_replace_reason"></t>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary ks_create_rma_button">Create RMA</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>
+

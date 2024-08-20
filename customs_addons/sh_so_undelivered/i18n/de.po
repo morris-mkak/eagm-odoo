@@ -1,0 +1,154 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sh_so_undelivered
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-21 14:07+0000\n"
+"PO-Revision-Date: 2020-10-21 14:07+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_sol_sale_order_line_kanban_view_inherit
+msgid ""
+"<br/>\n"
+"                            Customer :"
+msgstr ""
+"<br/>\n"
+"                            Kundin :"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_sol_sale_order_line_kanban_view_inherit
+msgid ""
+"<br/>\n"
+"                            Product :"
+msgstr ""
+"<br/>\n"
+"                            Produkt :"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_sol_sale_order_line_kanban_view_inherit
+msgid ""
+"<br/>\n"
+"                            Qty :"
+msgstr ""
+"<br/>\n"
+"                            Menge:"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_form_view_inherit
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_tree_view_inherit
+msgid "Amount"
+msgstr "Menge"
+
+#. module: sh_so_undelivered
+#: model:ir.model.fields,help:sh_so_undelivered.field_sale_order_line__so_order_date
+msgid ""
+"Creation date of draft/sent orders,\n"
+"Confirmation date of confirmed orders."
+msgstr ""
+"Erstellungsdatum des Entwurfs / der gesendeten Bestellungen, \ n"
+"Bestätigungsdatum der bestätigten Bestellungen."
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_search_view_inherit
+msgid "Customer"
+msgstr "Kundin"
+
+#. module: sh_so_undelivered
+#: model:ir.model.fields,field_description:sh_so_undelivered.field_sale_order_line__display_name
+msgid "Display Name"
+msgstr "Anzeigename"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_search_view_inherit
+msgid "Group By"
+msgstr "Gruppiere nach"
+
+#. module: sh_so_undelivered
+#: model:ir.model.fields,field_description:sh_so_undelivered.field_sale_order_line__id
+msgid "ID"
+msgstr "ICH WÜRDE"
+
+#. module: sh_so_undelivered
+#: model:ir.model.fields,field_description:sh_so_undelivered.field_sale_order_line__is_delivered
+msgid "Is Delivered"
+msgstr "Wird geliefert"
+
+#. module: sh_so_undelivered
+#: model:ir.model.fields,field_description:sh_so_undelivered.field_sale_order_line____last_update
+msgid "Last Modified on"
+msgstr "Zuletzt geändert am"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_search_view_inherit
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_sol_sale_order_line_kanban_view_inherit
+msgid "Order"
+msgstr "Auftrag"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_sol_sale_order_line_kanban_view_inherit
+msgid "Order :"
+msgstr "Bestellen :"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_search_view_inherit
+msgid "Order Date"
+msgstr "Bestelldatum"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_form_view_inherit
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_tree_view_inherit
+msgid "Price"
+msgstr "Preis"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_search_view_inherit
+msgid "Product"
+msgstr "Produkt"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_form_view_inherit
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_tree_view_inherit
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_sol_sale_order_line_kanban_view_inherit
+msgid "Qty"
+msgstr "Menge"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_form_view_inherit
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_tree_view_inherit
+msgid "Sale order No"
+msgstr "Verkaufsauftrag Nr"
+
+#. module: sh_so_undelivered
+#: model:ir.model,name:sh_so_undelivered.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Kundenauftragsposition"
+
+#. module: sh_so_undelivered
+#: model:ir.model.fields,field_description:sh_so_undelivered.field_sale_order_line__so_order_date
+msgid "Sales order date"
+msgstr "Kundenauftragsdatum"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_so_undelivered_search_view_inherit
+msgid "Search Sales Order Line"
+msgstr "Kundenauftragsposition suchen"
+
+#. module: sh_so_undelivered
+#: model:ir.actions.act_window,name:sh_so_undelivered.action_sh_so_undelivered
+#: model:ir.ui.menu,name:sh_so_undelivered.sh_so_undelivered
+msgid "Undelivered"
+msgstr "Nicht zugestellt"
+
+#. module: sh_so_undelivered
+#: model_terms:ir.ui.view,arch_db:sh_so_undelivered.sh_sol_sale_order_line_kanban_view_inherit
+msgid "product_id :"
+msgstr "Produkt ID :"

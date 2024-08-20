@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Dependant/Kin Form-->
+        <record id="ke_kins_form" model="ir.ui.view">
+            <field name="name">ke.hr.kins.form</field>
+            <field name="model">ke.employee.kin</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="employee_id"/>
+                        </group>
+                        <group name="kins" string="Depandant/Kin">
+                            <group>
+                                <field name="name"/>
+                                <field name="gender"/>
+                                <field name="relation"/>
+                            </group>
+                            <group>
+                                <field name="birthday"/>
+                                <field name="kin"/>
+                                <field name="phone"
+                                       attrs="{'required': [('kin', '=', True)]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="address" string="Address">
+                                <field name="address"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=odoo14
+      - POSTGRES_PASSWORD=odoo14
+      - POSTGRES_DB=postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./db:/db
+    restart: unless-stopped
+    ports:
+      - "35432:5432"
+
+  odoo:
+    image: odoo:14
+    depends_on:
+      - db
+    restart: unless-stopped
+    ports:
+      - "38069:8069"
+    environment:
+      - HOST=db
+      - USER=odoo14
+      - PASSWORD=odoo14
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./customs_addons:/mnt/customs_addons
+      - ./enterprise_addons:/mnt/enterprise_addons
+
+    command:
+      - --log-level=debug
+
+volumes:
+  db-data:
+  odoo-web-data:
+

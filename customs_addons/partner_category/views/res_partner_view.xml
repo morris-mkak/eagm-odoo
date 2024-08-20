@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<!-- Partner Changes -->
+	<record id="view_partner_form_inherited" model="ir.ui.view">
+		<field name="name">res.partner.category.form</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<field name="parent_id" position="after">
+				<field name="partner_category_id" attrs="{'invisible': [('parent_id', '!=', False)]}"/>
+			</field>
+		</field>
+	</record>
+
+
+	<record id="view_partner_category_tree" model="ir.ui.view">
+		<field name="name">partner.category.tree</field>
+		<field name="model">partner.category</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name"/>
+				<field name="parent_id"/>
+				<field name="child_category_ids"/>
+				<field name="partner_ids"/>
+			</tree>
+		</field>
+	</record>
+
+	<!-- Partner Changes -->
+	<record id="view_partner_categ_tree" model="ir.ui.view">
+		<field name="name">res.partner.category.tree.categ</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_tree"/>
+		<field name="arch" type="xml">
+			<field name="active" position="after">
+				<field name="partner_category_id" invisible="1"/>
+			</field>
+		</field>
+	</record>
+
+
+	<record id="view_res_partner_category_search" model="ir.ui.view">
+		<field name="name">res.partner.category.search</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_res_partner_filter"/>
+		<field name="arch" type="xml">
+			<field name="parent_id" position="after">
+				<field name="partner_category_id"/>
+			</field>
+			<filter name="group_country" position="after">
+				<filter name="group_partner_category" string="Category" domain="[('parent_id', '=', False)]" context="{'group_by': 'partner_category_id'}"/>
+			</filter>
+			<group name="group_by" position="after">
+				<searchpanel>
+					<field name="partner_category_id" icon="fa-users" string="Partner Category"/>
+				</searchpanel>
+			</group>
+		</field>
+	</record>
+
+	<!-- Partner Category -->
+	<record id="view_partner_category_form" model="ir.ui.view">
+		<field name="name">partner.category.form</field>
+		<field name="model">partner.category</field>
+		<field name="arch" type="xml">
+			<form string="Partner Category">
+				<sheet>
+					<group>
+						<field name="name"/>
+						<field name="parent_id"/>
+					</group>
+					<notebook>
+						<page string="Child Category">
+							<field name="child_category_ids" nolabel="1"/>
+						</page>
+						<page string="Partners">
+							<field name="partner_ids" nolabel="1" domain="[('parent_id', '=', False), ('category_id', '=', False)]"/>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_partner_category" model="ir.actions.act_window">
+		<field name="name">Partner Category</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">partner.category</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_partner_category" name="Partner Category" parent="sale.menu_sale_config" action="action_partner_category" sequence="2"/>
+
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_face_attendance_face_attendance,face_attendance.face_attendance,model_face_attendance_face_attendance,,1,0,0,0

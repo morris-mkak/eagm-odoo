@@ -1,0 +1,39 @@
+<odoo>
+    <record id="monthly_p9_report_wizard" model="ir.ui.view">
+        <field name="name">monthly.p9.report.wizard</field>
+        <field name="model">monthly.p9.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Excel Report">
+                <group>
+                    <group>
+                        <field name="from_date"/>
+                        <field name="to_date"/>
+                        <field name="individual_employee" readonly="1"/>
+                        <field name="employee_id"
+                               attrs="{'invisible':[('individual_employee','=', False)],'required':[('individual_employee','=', True)],'readonly':[('individual_employee','=', True)]}"
+                               options="{'no_create_edit':True,'no_create':True,'no_open':True}"/>
+                        <field name="p9_printed" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="file_name" invisible="1"/>
+                        <field name="p9_file" readonly="1"
+                               filename="file_name"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="print_p9_xls_report" string="Export"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_p9_reporting_excel" model="ir.actions.act_window">
+        <field name="name">KRA P9 Form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">monthly.p9.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_line,access.sale.order.line,model_sale_order_line,eagm_custom_addons.group_restrict_sale_order_line,1,1,1,0
+access_brand_report_summary,access.brand.report.summary,model_brand_report_summary,base.group_user,1,1,1,0
+access_sales_report_summary,access.sales.report.summary,model_sales_report_summary,base.group_user,1,1,1,0

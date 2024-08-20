@@ -1,0 +1,27 @@
+.ks_open_rma_form, .ks_view_rma_form {
+    position: absolute !important;
+    top: 12px !important;
+    right: 3% !important;
+}
+.o_company_1_layout {
+    display: flex !important;
+    justify-content: space-between !important;
+}
+.o_company_1_layout  .col-md-5.ml-auto {
+    margin-left: 0px !important;
+}
+.article.o_report_layout_standard.o_company_1_layout .address.row {
+    margin-top: 15px 0px !important;
+}
+.article.o_report_layout_standard.o_company_1_layout .col-md-5.ml-auto {
+    margin-left: 0px !important;
+}
+.Product.table table {
+    width: 100% !important;
+}
+.Product table{width:100% !important}
+@media (min-width: 576px){
+.modal-dialog {
+    max-width: 750px !important;
+}
+}

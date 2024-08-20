@@ -1,0 +1,7 @@
+/* .odoo .eagm_custom_column_css{
+    width: 1000px;
+} */
+
+.eagm_custom_column_css table head > tr > th:nth-child(3) {
+    width: 250 px;
+}

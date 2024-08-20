@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="arabic_english_invoice" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@name='invoice_date']" position="after">
+l10n_tz_tvfd_verification_code
+            <div class="col-auto col-3 mw-100 mb-2"  t-if="l10n_tz_tvfd_verification_code"  name="l10n_tz_tvfd_verification_code">
+                <strong>TRA Verification Code:</strong>
+                 <p class="m-0" t-field="o.l10n_tz_tvfd_verification_code"/>
+
+            </div>
+
+        </xpath>
+    </template>
+
+</odoo>

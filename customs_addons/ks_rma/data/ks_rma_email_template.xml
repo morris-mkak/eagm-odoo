@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--Send BY Email: Mail Template    -->
+    <record id="mail_template_ks_rma" model="mail.template">
+        <field name="name">RMA Notification</field>
+        <field name="model_id" ref="model_ks_rma"/>
+        <field name="email_from">${object.ks_user_id.email_formatted |safe}</field>
+        <field name="partner_to">${object.ks_partner_id.id}</field>
+        <field name="subject">${object.ks_company_id.name} RMA (Ref ${object.ks_sequence_code or 'n/a' })</field>
+        <field name="report_template" ref="report_rma_action"/>
+        <field name="report_name">${(object.ks_sequence_code or '')}</field>
+        <field name="lang">${object.ks_partner_id.lang}</field>
+<!--        <field name="user_signature" eval="True"/>-->
+        <field name="auto_delete" eval="True"/>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear ${object.ks_partner_id.name}
+                    % if object.ks_partner_id.parent_id:
+                    (${object.ks_partner_id.parent_id.name})
+                    % endif
+                    <br/>
+                    <br/>
+                    Here is the RMA <strong>${object.ks_sequence_code}</strong> from ${object.ks_company_id.name}.
+                    <br/>
+                    <br/>
+                    Do not hesitate to contact us if you have any question.
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <!--Send Mail To Assigned Person On Request Of RMA  -->
+    <record id="mail_template_ks_rma_requested" model="mail.template">
+        <field name="name">RMA Request</field>
+        <field name="model_id" ref="model_ks_rma"/>
+        <field name="subject">${object.ks_company_id.name} RMA (Ref ${object.ks_sequence_code or 'n/a' })</field>
+        <field name="lang">${object.ks_user_id.lang}</field>
+<!--        <field name="user_signature" eval="True"/>-->
+        <field name="auto_delete" eval="True"/>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear ${object.ks_user_id.name}
+                    % if object.ks_user_id.parent_id:
+                    (${object.ks_user_id.parent_id.name})
+                    % endif
+                    <br/>
+                    <br/>
+                    A new RMA <strong>${object.ks_sequence_code}</strong> from ${object.ks_company_id.name} has been
+                    requested for partner
+                    <strong>${object.ks_partner_id.name}</strong>.
+                    <br/>
+                    Please have A look.
+                    <br/>
+                    Requested Date:
+                    <strong>${object.ks_date_requested}</strong>
+                    <br/>
+                    <br/>
+                    Do not hesitate to contact us if you have any question.
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <!--Send Mail To Partner On Confirmation Of RMA    -->
+    <record id="mail_template_ks_rma_confirmation" model="mail.template">
+        <field name="name">RMA Confirmation</field>
+        <field name="model_id" ref="model_ks_rma"/>
+        <field name="email_from">${object.ks_user_id.email_formatted |safe}</field>
+        <field name="partner_to">${object.ks_partner_id.id}</field>
+        <field name="subject">${object.ks_company_id.name} RMA (Ref ${object.ks_sequence_code or 'n/a' })</field>
+        <field name="lang">${object.ks_partner_id.lang}</field>
+<!--        <field name="user_signature" eval="True"/>-->
+        <field name="auto_delete" eval="True"/>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear ${object.ks_partner_id.name}
+                    % if object.ks_partner_id.parent_id:
+                    (${object.ks_partner_id.parent_id.name})
+                    % endif
+                    <br/>
+                    <br/>
+                    Your requested RMA <strong>${object.ks_sequence_code}</strong> from ${object.ks_company_id.name} has
+                    been confirmed now.
+                    <br/>
+                    <br/>
+                    Confirmed By:
+                    <strong>${object.ks_confirmed_user_id.name}</strong>
+                    <br/>
+                    <br/>
+                    Confirmation Date:
+                    <strong>${object.ks_date_confirmed}</strong>
+                    <br/>
+                    <br/>
+                    Do not hesitate to contact us if you have any question.
+                </p>
+            </div>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,17 @@
+<odoo>
+
+    <data>
+        <template id="inherit_report_invoice"
+                  inherit_id="account.report_invoice_document">
+
+            <xpath expr="//div[@id='informations']" position="inside">
+                <div class="col-auto col-3 mw-100 mb-2" t-if="o.grn_number_id"
+                     name="grn_number_id">
+                    <strong>GRN Number:</strong>
+                    <p class="m-0" t-field="o.grn_number_id"/>
+                </div>
+            </xpath>
+        </template>
+    </data>
+
+</odoo>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+<odoo>
+    <data>
+        <record id="view_evaluation_template_form" model="ir.ui.view">
+            <field name="name">evaluation.template.form</field>
+            <field name="model">evaluation.template</field>
+            <field name="arch" type="xml">
+                <form string="Evaluation Template">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="job_id" options="{'no_create_edit': True, 'no_open': True,'no_create': True}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Questions">
+                                <field name="page_ids" invisible="1"/>
+                                <field name="question_ids" invisible="1"/>
+                                <field name="question_and_page_ids" nolabel="1" widget="evaluation_question_one2many" context="{'default_template_id': active_id}">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="title"/>
+                                        <field name="question_type" />
+                                        <field name="is_page" invisible="1"/>
+                                        <control>
+                                            <create name="add_section_control" string="Add a section" context="{'default_is_page': True}"/>
+                                            <create name="add_question_control" string="Add a question"/>
+                                        </control>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_evaluation_template_tree" model="ir.ui.view">
+            <field name="name">evaluation.template.tree</field>
+            <field name="model">evaluation.template</field>
+            <field name="arch" type="xml">
+                <tree string="Evaluation Templates">
+                    <field name="job_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_evaluation_template" model="ir.actions.act_window">
+            <field name="name">Evaluation Templates</field>
+            <field name="res_model">evaluation.template</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="_menu_evaluation_template" action="action_evaluation_template" parent="menu_evaluation" sequence="4" name="Evaluation Templates" groups="project.group_project_manager"/>
+    </data>
+</odoo>
